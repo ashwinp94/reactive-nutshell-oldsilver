@@ -1,13 +1,23 @@
-import { Route} from "react-router-dom";
+import { Route } from "react-router-dom";
 import React, { Component } from "react";
 import NewsManager from '../modules/NewsManager'
 import NewsList from './news/NewsList'
 
 export default class ApplicationViews extends Component {
 
-state = {
-  newsitems: []
-}
+  state = {
+    newsitems: []
+  }
+
+  addNews = news =>
+    NewsManager.post(news)
+      .then(() => AnimalManager.getAll())
+      .then(animals =>
+        this.setState({
+          animals: animals
+        })
+      );
+
   componentDidMount() {
 
     NewsManager.getAll().then(allNews => {
@@ -22,9 +32,10 @@ state = {
     return (
       <React.Fragment>
         <Route path="/" render={(props) => {
-            return  <NewsList newsitems={this.state.newsitems} />
-          }}
-          />
+          return <NewsList newsitems={this.state.newsitems} />
+        }}
+        />
+
         <Route
           path="/friends" render={props => {
             return null

@@ -6,6 +6,7 @@ export default class NewsList extends Component {
         return (
             <React.Fragment>
             <section className="newsitems">
+            <h1>Your Saved Articles</h1>
             {
                 this.props.newsitems.map(newsitem =>
                     <div key={newsitem.id}>
