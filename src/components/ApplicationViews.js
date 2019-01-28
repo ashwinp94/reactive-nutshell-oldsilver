@@ -12,19 +12,17 @@ state = {
 
     NewsManager.getAll().then(allNews => {
       this.setState({
-        news: allNews
+        newsitems: allNews
       });
     });
   }
-
-
 
 
   render() {
     return (
       <React.Fragment>
         <Route path="/" render={(props) => {
-            return <NewsList newsitems={this.state.newsitems} />
+            return  <NewsList newsitems={this.state.newsitems} />
           }}
           />
         <Route
