@@ -1,4 +1,4 @@
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import React, { Component } from "react";
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
@@ -16,7 +16,12 @@ export default class ApplicationViews extends Component {
     })
   }
 
-  //addEvent 
+  addEvent = (event) => EventManager.post(event)
+    .then(() => EventManager.getAll())
+    .then(events => this.setState({
+          events: events
+      })
+    )
 
   //updateEvent 
 
@@ -53,14 +58,16 @@ export default class ApplicationViews extends Component {
         />
         
         {/*BEGIN EVENT ROUTING*/}
-        <Route
-          path="/events" render={props => {
-            return <EventList events={this.state.events} />
-          }}
-        />
-
+        <Route exact path="/events" render={(props) => {
+            return <EventList {...props}
+                              events={this.state.events} />
+          }} />
         {/*updateEvent route*/}
+        <Route path="/events/new" render={(props) => {
+          return <EventForm {...props}
+                            addEvent={this.addEvent} />
+        }} />
       </React.Fragment>
-    );
+    )
   }
 }
