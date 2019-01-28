@@ -1,7 +1,15 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import MessageList from './messages/MessageList'
 
 export default class ApplicationViews extends Component {
+  state = {
+    newsitems: [],
+    events: [],
+    tasks: [],
+    friends:[],
+    messages: []
+  }
 
   render() {
     return (
@@ -23,7 +31,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return null
+            return <MessageList messages={this.state.messages}/>
             // Remove null and return the component which will show the messages
           }}
         />
