@@ -98,8 +98,6 @@ export default class ApplicationViews extends Component {
       );
   };
 
-<<<<<<< HEAD
-=======
   addNews = Newnews =>
     NewsManager.post(Newnews)
       .then(() => NewsManager.getAll())
@@ -108,7 +106,6 @@ export default class ApplicationViews extends Component {
           newsitems: news
         })
       );
->>>>>>> 1517252b8978a705eb5262ca70acce33d73a8323
 
   addMessage = (message) => MessageManager.post(message)
         .then(() => MessageManager.getAll())
