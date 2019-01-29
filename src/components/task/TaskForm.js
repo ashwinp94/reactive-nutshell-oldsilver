@@ -2,33 +2,35 @@ import React, { Component } from 'react'
 
 export default class TaskForm extends Component{
   state = {
-    task:"",
-    expectedCompletionDate:"" 
+    taskName:"",
+    date:"",
+    userId: 1
   }
 
   handleFieldChange = evt => {
     const stateToChange = {}
     stateToChange[evt.target.id] = evt.target.value
+    console.log(evt.target.id)
     this.setState(stateToChange)
   }
-//   constructNewTask = evt => {
-//     evt.preventDefault()
-//     if (this.state.task === "") {
-//         window.alert("Please enter a task")
-//     } else {
-//         const task = {
-//             name: this.state.taskName,
-//             expectedCompletionDate:this.state.expectedCompletionDate
-//         }
-//     }
-// }
+  constructNewTask = evt => {
+    evt.preventDefault()
+        const tasks = {
+            task: this.state.taskName,
+            expectedCompletionDate:this.state.date,
+            complete: false,
+            userId:this.state.userId  
+        }
+          this.props.addTask(tasks).then(() => this.props.history.push("/tasks"));
+    }
+
 
   render(){
     return(
         <>
           <form className="taskForm">
               <div className="form-group">
-                  <label htmlFor="taskName">Task Name</label>
+                  <label htmlFor="task">Task Name</label>
                   <input type="text" required
                         className="form-control"
                         onChange={this.handleFieldChange}
@@ -36,13 +38,14 @@ export default class TaskForm extends Component{
                         placeholder="New Task" />
               </div>
               <div className="form-group">
-                  <label htmlFor="expected-completion-date">Expected Completion Date</label>
+                  <label htmlFor="expectedCompletionDate">Expected Completion Date</label>
                   <input type="date" required
                         className="form-control"
                         onChange={this.handleFieldChange}
-                        id="date" placeholder="Completion Date" />
+                        id="date" 
+                        placeholder="Completion Date" />
               </div>
-              <button type="submit" onClick={this.constructNewAnimal} className="btn btn-primary">Submit</button>
+              <button type="submit" onClick={this.constructNewTask} className="btn btn-primary">Submit</button>
           </form>
         </>
     ) 

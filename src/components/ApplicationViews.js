@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
+import TaskForm from './task/TaskForm'
 
 export default class ApplicationViews extends Component {
 
@@ -16,6 +17,22 @@ export default class ApplicationViews extends Component {
       })
     })
   }
+
+  deleteTask = (id) => {
+    return TaskManager.deleteTask(id)
+    .then(task => this.setState({
+    tasks:task
+    })
+    )
+  }
+
+
+  addTask = (task) => TaskManager.postNewTask(task)
+  .then(() => TaskManager.getAll())
+  .then(task => this.setState({
+      tasks: task
+      })
+    )
 
   render() {
     return (
@@ -42,13 +59,18 @@ export default class ApplicationViews extends Component {
           }}
         />
 
-        <Route
-          path="/tasks" render={props => {
-            return <TaskList tasks={this.state.tasks} />
-
-            // Remove null and return the component which will show the user's tasks
-          }}
-        />
+        <Route exact path="/tasks" render={(props) => {
+          return <TaskList {...props}
+          tasks={this.state.tasks} 
+          deleteTask={this.deleteTask} />
+      }} />
+        <Route 
+          path="/tasks/new" render={(props) => {
+            return <TaskForm {...props}
+              addTask={this.addTask} 
+              tasks={this.state.tasks}
+              />
+              }} />
         
       </React.Fragment>
     );
