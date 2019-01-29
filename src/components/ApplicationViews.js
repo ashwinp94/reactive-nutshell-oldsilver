@@ -4,19 +4,44 @@ import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
 import TaskForm from './task/TaskForm'
 
+import EventForm from "./events/EventForm";
+import EventList from "./events/EventList";
+import EventManager from "../modules/EventManager";
 export default class ApplicationViews extends Component {
+  state = {
+    events: []
+  };
+
+  componentDidMount() {
+    EventManager.getAll().then(events => {
+      this.setState({
+        events: events
+      })
+    })
+    
+    TaskManager.getAll().then(allTasks => {
+      this.setState({
+        tasks:allTasks
+      })
+    })
+
+  }
+
+  addEvent = (event) => EventManager.post(event)
+    .then(() => EventManager.getAll())
+    .then(events => this.setState({
+          events: events
+      })
+    )
+
+  //updateEvent 
 
   state= {
     tasks:[]
   }
 
   componentDidMount(){
-    TaskManager.getAll().then(allTasks => {
-      this.setState({
-        tasks:allTasks
-      })
-    })
-  }
+
 
   deleteTask = (id) => {
     return TaskManager.deleteTask(id)
@@ -72,7 +97,17 @@ export default class ApplicationViews extends Component {
               />
               }} />
         
+        {/*BEGIN EVENT ROUTING*/}
+        <Route exact path="/events" render={(props) => {
+            return <EventList {...props}
+                              events={this.state.events} />
+          }} />
+        {/*addEvent route*/}
+        <Route path="/events/new" render={(props) => {
+          return <EventForm {...props}
+                            addEvent={this.addEvent} />
+        }} />
       </React.Fragment>
-    );
+    )
   }
 }
