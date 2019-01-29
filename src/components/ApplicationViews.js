@@ -5,7 +5,8 @@ import NewsList from './news/NewsList'
 import NewsForm from "./news/NewsForm";
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
-import EventManager from "../modules/EventManager"
+import EventManager from "../modules/EventManager";
+import EventEdit from "./events/EventEdit"
 export default class ApplicationViews extends Component {
   state = {
     events: [],
@@ -44,6 +45,15 @@ export default class ApplicationViews extends Component {
           })
         );
 
+  updateEvent = (eventId, editedEventObj) => {
+    return EventManager.put(eventId, editedEventObj)
+    .then(() => EventManager.getAll())
+    .then(events => {
+      this.setState({
+        events: events
+      })
+    })
+  }
   deleteNews = id => {
     return fetch(`http://localhost:5002/newsitems/${id}`, {
       method: "DELETE"
@@ -62,6 +72,9 @@ export default class ApplicationViews extends Component {
   render() {
     return (
       <React.Fragment>
+        <Route exact path="/" render={(props) => {
+                  return <NewsList newsitems={this.state.newsitems} />
+                }} />
         <Route exact path="/news" render={(props) => {
           return <NewsList {...props}  newsitems={this.state.newsitems}
                                         deleteNews={this.deleteNews}/>
@@ -100,6 +113,10 @@ export default class ApplicationViews extends Component {
         <Route path="/events/new" render={(props) => {
           return <EventForm {...props}
                             addEvent={this.addEvent} />
+        }} />
+        {/*updateEvent route*/}
+        <Route path="/events/:eventId(\d+)/edit" render={props => {
+          return <EventEdit {...props} updateEvent={this.updateEvent}/>
         }} />
       </React.Fragment>
     )
