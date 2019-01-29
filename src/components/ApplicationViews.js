@@ -9,7 +9,8 @@ import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 export default class ApplicationViews extends Component {
   state = {
-    events: []
+    events: [],
+    tasks:[]
   };
 
   componentDidMount() {
@@ -18,7 +19,7 @@ export default class ApplicationViews extends Component {
         events: events
       })
     })
-    
+
     TaskManager.getAll().then(allTasks => {
       this.setState({
         tasks:allTasks
@@ -34,30 +35,31 @@ export default class ApplicationViews extends Component {
       })
     )
 
-  //updateEvent 
-
-  state= {
-    tasks:[]
-  }
-
-  componentDidMount(){
-
-
-  deleteTask = (id) => {
-    return TaskManager.deleteTask(id)
+    addTask = (task) => TaskManager.postNewTask(task)
+    .then(() => TaskManager.getAll())
     .then(task => this.setState({
-    tasks:task
-    })
-    )
-  }
-
-
-  addTask = (task) => TaskManager.postNewTask(task)
-  .then(() => TaskManager.getAll())
-  .then(task => this.setState({
-      tasks: task
+        tasks: task
       })
     )
+    deleteTask = (id) => {
+      return TaskManager.deleteTask(id)
+      .then(task => this.setState({
+        tasks: task
+      }))
+    }
+
+    editTask = (studentId, existingObj) => {
+      return TaskManager.editTask(studentId, existingObj)
+      .then(() => TaskManager.getAll())
+      .then(tasks => {
+        this.setState({
+          tasks:tasks
+        })
+      })
+    }
+
+
+
 
   render() {
     return (
@@ -96,16 +98,21 @@ export default class ApplicationViews extends Component {
               tasks={this.state.tasks}
               />
               }} />
+
+        <Route exact path='/students/:studentId(\d+)/edit' render={(props => {
+            return <TaskForm {...props} 
+            editTask = {this.editTask}/>
+          })} />
         
         {/*BEGIN EVENT ROUTING*/}
         <Route exact path="/events" render={(props) => {
             return <EventList {...props}
-                              events={this.state.events} />
+              events={this.state.events} />
           }} />
         {/*addEvent route*/}
         <Route path="/events/new" render={(props) => {
           return <EventForm {...props}
-                            addEvent={this.addEvent} />
+            addEvent={this.addEvent} />
         }} />
       </React.Fragment>
     )

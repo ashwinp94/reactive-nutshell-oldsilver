@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import TaskManager from "../../modules/TaskManager";
 
 export default class TaskForm extends Component{
   state = {
@@ -23,8 +24,6 @@ export default class TaskForm extends Component{
         }
           this.props.addTask(tasks).then(() => this.props.history.push("/tasks"));
     }
-
-
   render(){
     return(
         <>

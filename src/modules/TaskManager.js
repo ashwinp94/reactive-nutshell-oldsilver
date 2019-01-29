@@ -21,4 +21,13 @@ export default{
       body:JSON.stringify(newTaskObj)
     }).then(d => d.json())
   }
+  // editTask(taskId, existingObj){
+  //   return fetch(`${localURL}/tasks/${taskId}`,{
+  //     method:"PUT",
+  //     headers:{
+  //       "Content-Type": "application/JSON"
+  //     },
+  //     body:JSON.stringify(existingObj)
+  //   })
+  // }
 } 
