@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import { Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 export default class EventList extends Component {
   render() {
@@ -24,6 +24,8 @@ export default class EventList extends Component {
                   {event.eventName} {event.eventDate}
                   {event.eventTime} {event.eventLocation}
                 </h5>
+
+                <Link className="nav-link" to={`/events/${event.id}/edit`}>Edit</Link>
               </div>
             </div>
           ))}

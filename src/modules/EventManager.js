@@ -16,6 +16,15 @@ export default  {
       },
       body: JSON.stringify(newEvent)
     }).then(data => data.json())
-  }
+  },
   //PUT fetch for edit functionality
+  put(eventId, existingEvent) {
+    return fetch(`${remoteURL}/events/${eventId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/JSON"
+      },
+      body: JSON.stringify(existingEvent)
+    }).then(data => data.json())
+  }
 }
