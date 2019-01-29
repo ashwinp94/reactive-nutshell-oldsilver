@@ -72,6 +72,9 @@ export default class ApplicationViews extends Component {
   render() {
     return (
       <React.Fragment>
+        <Route exact path="/" render={(props) => {
+                  return <NewsList newsitems={this.state.newsitems} />
+                }} />
         <Route exact path="/news" render={(props) => {
           return <NewsList {...props}  newsitems={this.state.newsitems}
                                         deleteNews={this.deleteNews}/>
