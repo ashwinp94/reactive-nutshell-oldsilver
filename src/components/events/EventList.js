@@ -18,14 +18,12 @@ export default class EventList extends Component {
           <section className="events">
           {/*.map loops thru list of events*/}
           {this.props.events.map(event => (
-            <div key={event.id} className="card card--event">
+            <div key={event.id} className="card">
               <div className="card-body">
                 <h5 className="card-title">
                   {event.eventName} {event.eventDate}
                   {event.eventTime} {event.eventLocation}
                 </h5>
-        
-              
               </div>
             </div>
           ))}

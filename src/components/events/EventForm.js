@@ -5,7 +5,8 @@ export default class EventForm extends Component {
     eventName: "",
     eventDate: "",
     eventTime: "",
-    eventLocation: ""
+    eventLocation: "",
+    userId: 1
   }
 
   handleFieldChange = evt => {
@@ -18,13 +19,14 @@ export default class EventForm extends Component {
     evt.preventDefault()
     
     const event = {
-      name: this.state.eventName,
-      date: this.state.eventDate,
-      time: this.state.eventTime,
-      location: this.state.eventLocation
+      eventName: this.state.eventName,
+      eventDate: this.state.eventDate,
+      eventTime: this.state.eventTime,
+      eventLocation: this.state.eventLocation,
+      userId: this.state.userId
     }
 
-    this.props.saveEvent(event).then(() => this.props.history.push("/events"))
+    this.props.addEvent(event).then(() => this.props.history.push("/events"))
   }
 
   //updateExistingEvent 
@@ -69,7 +71,7 @@ export default class EventForm extends Component {
                    placeholder="Event Location" />
           </div>
 
-          <button type="submit" onClick={this.saveStudent} className="btn btn-primary">Save</button>
+          <button type="submit" onClick={this.saveEvent} className="btn btn-primary">Save</button>
         </form>
       </React.Fragment>
     )

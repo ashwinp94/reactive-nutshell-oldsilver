@@ -62,7 +62,7 @@ export default class ApplicationViews extends Component {
             return <EventList {...props}
                               events={this.state.events} />
           }} />
-        {/*updateEvent route*/}
+        {/*addEvent route*/}
         <Route path="/events/new" render={(props) => {
           return <EventForm {...props}
                             addEvent={this.addEvent} />
