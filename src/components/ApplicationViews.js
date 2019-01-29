@@ -3,14 +3,38 @@ import React, { Component } from "react";
 import NewsManager from '../modules/NewsManager'
 import NewsList from './news/NewsList'
 import NewsForm from "./news/NewsForm";
-
+import EventForm from "./events/EventForm";
+import EventList from "./events/EventList";
+import EventManager from "../modules/EventManager"
 export default class ApplicationViews extends Component {
-
   state = {
+    events: [],
     newsitems: []
+  };
+
+  componentDidMount() {
+    EventManager.getAll().then(events => {
+      this.setState({
+        events: events
+      })
+    })
+
+    NewsManager.getAll().then(allNews => {
+      this.setState({
+        newsitems: allNews
+      });
+    });
   }
 
 
+
+
+  addEvent = (event) => EventManager.post(event)
+    .then(() => EventManager.getAll())
+    .then(events => this.setState({
+          events: events
+      })
+    )
 
   deleteNews = id => {
     return fetch(`http://localhost:5002/newsitems/${id}`, {
@@ -34,16 +58,6 @@ export default class ApplicationViews extends Component {
           newsitems: news
         })
       );
-
-  componentDidMount() {
-
-    NewsManager.getAll().then(allNews => {
-      this.setState({
-        newsitems: allNews
-      });
-    });
-  }
-
 
   render() {
     return (
@@ -77,7 +91,17 @@ export default class ApplicationViews extends Component {
           }}
         />
 
+        {/*BEGIN EVENT ROUTING*/}
+        <Route exact path="/events" render={(props) => {
+            return <EventList {...props}
+                              events={this.state.events} />
+          }} />
+        {/*addEvent route*/}
+        <Route path="/events/new" render={(props) => {
+          return <EventForm {...props}
+                            addEvent={this.addEvent} />
+        }} />
       </React.Fragment>
-    );
+    )
   }
 }
