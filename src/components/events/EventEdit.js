@@ -61,7 +61,7 @@ export default class EventEdit extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="eventDate">Date</label>
-              <input type="date" required
+              <input type="text" required
                     className="form-control"
                     onChange={this.handleFieldChange}
                     id="eventDate"
@@ -69,7 +69,7 @@ export default class EventEdit extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="eventTime">Time</label>
-              <input type="time" required
+              <input type="text" required
                     className="form-control"
                     onChange={this.handleFieldChange}
                     id="eventTime"
