@@ -24,6 +24,26 @@ export default class TaskForm extends Component{
         }
           this.props.addTask(tasks).then(() => this.props.history.push("/tasks"));
     }
+    componentDidMount(){
+      TaskManager.get(this.props.match.params.taskId).then(task => {
+        this.setState({
+          task:task.taskName,
+          date: task.date,
+          userId: task.userId
+        })
+      })
+    }
+    updateExistingTask = evt => {
+      evt.preventDefault()
+
+      const existingTask = {
+        task:this.state.taskName ,
+        date: this.state.date,
+        userId:this.state.userId
+      }
+      this.props.editTask(this.props.match.params.taskId, existingTask)
+      .then(() => this.props.history.push("/tasks"))
+    }
   render(){
     return(
         <>

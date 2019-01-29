@@ -22,7 +22,10 @@ export default class TaskList extends Component{
                 {task.task} 
                 <p>{task.expectedCompletionDate}</p>
               </h2> 
-              <Link className="nav-link" to={`/tasks/${task.id}`}>Edit</Link>
+              <Link 
+              className="nav-link" 
+              to={`/tasks/${task.id}`}>Edit</Link>
+
               <a href="#"
                   onClick={() => this.props.deleteTask(task.id)
                   .then(() => this.props.history.push("/tasks"))}

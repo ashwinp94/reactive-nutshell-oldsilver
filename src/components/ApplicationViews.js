@@ -4,13 +4,17 @@ import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
 import TaskForm from './task/TaskForm'
 
+import NewsManager from '../modules/NewsManager'
+import NewsList from './news/NewsList'
+import NewsForm from "./news/NewsForm";
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 export default class ApplicationViews extends Component {
   state = {
     events: [],
-    tasks:[]
+    tasks:[],
+    newsitems: []
   };
 
   componentDidMount() {
@@ -26,7 +30,15 @@ export default class ApplicationViews extends Component {
       })
     })
 
+    NewsManager.getAll().then(allNews => {
+      this.setState({
+        newsitems: allNews
+      });
+    });
   }
+
+
+
 
   addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
@@ -48,8 +60,8 @@ export default class ApplicationViews extends Component {
       }))
     }
 
-    editTask = (studentId, existingObj) => {
-      return TaskManager.editTask(studentId, existingObj)
+    editTask = (taskId, existingObj) => {
+      return TaskManager.editTask(taskId, existingObj)
       .then(() => TaskManager.getAll())
       .then(tasks => {
         this.setState({
@@ -60,17 +72,39 @@ export default class ApplicationViews extends Component {
 
 
 
+  deleteNews = id => {
+    return fetch(`http://localhost:5002/newsitems/${id}`, {
+      method: "DELETE"
+    })
+      .then(response => response.json())
+      .then(() => fetch(`http://localhost:5002/newsitems`))
+      .then(response => response.json())
+      .then(news =>
+        this.setState({
+          newsitems: news
+        })
+      );
+  };
+
+  addNews = Newnews =>
+  NewsManager.post(Newnews)
+      .then(() => NewsManager.getAll())
+      .then(news =>
+        this.setState({
+          newsitems: news
+        })
+      );
 
   render() {
     return (
       <React.Fragment>
-
-        <Route
-          exact path="/" render={props => {
-            return null
-            // Remove null and return the component which will show news articles
-          }}
-        />
+        <Route exact path="/news" render={(props) => {
+          return <NewsList {...props}  newsitems={this.state.newsitems}
+                                        deleteNews={this.deleteNews}/>
+        }}/>
+         <Route path="/news/new" render={(props) => {
+          return <NewsForm {...props}   addNews={this.addNews}/>
+                }} />
 
         <Route
           path="/friends" render={props => {
@@ -99,11 +133,18 @@ export default class ApplicationViews extends Component {
               />
               }} />
 
-        <Route exact path='/students/:studentId(\d+)/edit' render={(props => {
+        <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
             return <TaskForm {...props} 
             editTask = {this.editTask}/>
           })} />
         
+        <Route
+          path="/tasks" render={props => {
+            return null
+            // Remove null and return the component which will show the user's tasks
+          }}
+        />
+
         {/*BEGIN EVENT ROUTING*/}
         <Route exact path="/events" render={(props) => {
             return <EventList {...props}
