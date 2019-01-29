@@ -1,6 +1,7 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import MessageList from './messages/MessageList'
+import SendMessageForm from './messages/SendMessageForm'
 
 export default class ApplicationViews extends Component {
   state = {
@@ -32,6 +33,12 @@ export default class ApplicationViews extends Component {
         <Route
           path="/messages" render={props => {
             return <MessageList messages={this.state.messages}/>
+            // Remove null and return the component which will show the messages
+          }}
+        />
+        <Route
+          path="/messages" render={props => {
+            return <SendMessageForm messages={this.state.messages}/>
             // Remove null and return the component which will show the messages
           }}
         />
