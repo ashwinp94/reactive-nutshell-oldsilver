@@ -23,7 +23,15 @@ export default class ApplicationViews extends Component {
       })
     )
 
-  //updateEvent 
+  updateEvent = (eventId, editedEventObj) => {
+    return EventManager.put(eventId, editedEventObj)
+    .then(() => EventManager.getAll())
+    .then(events => {
+      this.setState({
+        events: events
+      })
+    })
+  }
 
   render() {
     return (
@@ -66,6 +74,10 @@ export default class ApplicationViews extends Component {
         <Route path="/events/new" render={(props) => {
           return <EventForm {...props}
                             addEvent={this.addEvent} />
+        }} />
+        {/*updateEvent route*/}
+        <Route path="/events/:eventId(\d+)/edit" render={props => {
+          return <EventForm {...props} updateEvent={this.updateEvent}/>
         }} />
       </React.Fragment>
     )
