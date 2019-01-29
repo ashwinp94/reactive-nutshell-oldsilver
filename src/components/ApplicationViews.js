@@ -10,6 +10,22 @@ export default class ApplicationViews extends Component {
     newsitems: []
   }
 
+
+
+  deleteNews = id => {
+    return fetch(`http://localhost:5002/newsitems/${id}`, {
+      method: "DELETE"
+    })
+      .then(response => response.json())
+      .then(() => fetch(`http://localhost:5002/newsitems`))
+      .then(response => response.json())
+      .then(news =>
+        this.setState({
+          newsitems: news
+        })
+      );
+  };
+
   addNews = Newnews =>
   NewsManager.post(Newnews)
       .then(() => NewsManager.getAll())
@@ -33,7 +49,8 @@ export default class ApplicationViews extends Component {
     return (
       <React.Fragment>
         <Route exact path="/news" render={(props) => {
-          return <NewsList {...props}  newsitems={this.state.newsitems} />
+          return <NewsList {...props}  newsitems={this.state.newsitems}
+                                        deleteNews={this.deleteNews}/>
         }}/>
          <Route path="/news/new" render={(props) => {
           return <NewsForm {...props}   addNews={this.addNews}/>

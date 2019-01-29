@@ -20,6 +20,11 @@ export default class NewsList extends Component {
                     <h3>{newsitem.title}</h3>
                     <h4>{newsitem.url}</h4>
                     <h5>{newsitem.synopsis}</h5>
+                    <button type="button"
+                            onClick = {() => this.props.deleteNews(newsitem.id)}
+                            className="btn btn-success">
+                        Delete
+                    </button>
                     </div>
                 )
             }
