@@ -21,6 +21,8 @@ export default class ApplicationViews extends Component {
     tasks:[],
     messages:[]
   };
+
+
   componentDidMount() {
     EventManager.getAll().then(events => {
       this.setState({
@@ -152,12 +154,12 @@ export default class ApplicationViews extends Component {
     return (
       <React.Fragment>
         <Route exact path="/news" render={(props) => {
-          return <NewsList {...props}  
-            newsitems={this.state.newsitems}              
+          return <NewsList {...props}
+            newsitems={this.state.newsitems}
             deleteNews={this.deleteNews}/>
         }}/>
         <Route path="/news/new" render={(props) => {
-          return <NewsForm {...props}   
+          return <NewsForm {...props}
           addNews={this.addNews}/>
                 }} />
 
@@ -183,22 +185,22 @@ export default class ApplicationViews extends Component {
 
         <Route exact path="/tasks" render={(props) => {
           return <TaskList {...props}
-          tasks={this.state.tasks} 
+          tasks={this.state.tasks}
           deleteTask={this.deleteTask} />
       }} />
-        <Route 
+        <Route
           path="/tasks/new" render={(props) => {
             return <TaskForm {...props}
-              addTask={this.addTask} 
+              addTask={this.addTask}
               tasks={this.state.tasks}
               />
               }} />
 
         <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
-            return <TaskEditForm {...props} 
+            return <TaskEditForm {...props}
             editTask = {this.editTask}/>
           })} />
-        
+
         <Route
           path="/tasks" render={props => {
             return null
