@@ -1,32 +1,28 @@
-import React, { Component } from "react"
-import "./Animal.css"
-import dog from "./DogIcon.png"
+// import React, { Component } from "react"
 
+// export default class MessageDetail extends Component {
+//     render() {
+//         /*
+//             Using the route parameter, find the animal that the
+//             user clicked on by looking at the `this.props.animals`
+//             collection that was passed down from ApplicationViews
+//         */
+//         const chat = this.props.messages.find(a => a.id === parseInt(this.props.match.params.messageId)) || {}
 
-export default class AnimalDetail extends Component {
-    render() {
-        /*
-            Using the route parameter, find the animal that the
-            user clicked on by looking at the `this.props.animals`
-            collection that was passed down from ApplicationViews
-        */
-        const animal = this.props.animals.find(a => a.id === parseInt(this.props.match.params.animalId)) || {}
-
-        return (
-            <section className="animal">
-                <div key={animal.id} className="card">
-                    <div className="card-body">
-                        <h4 className="card-title">
-                            <img src={dog} className="icon--dog" />
-                            {animal.name}
-                        </h4>
-                        <h6 className="card-title">{animal.breed}</h6>
-                        <a href="# "
-                            onClick={() => this.props.deleteAnimal(animal.id)
-                                            .then(() => this.props.history.push("/animals"))}
-                            className="card-link">Delete</a>
-                    </div>
-                </div>
-            </section>
-        )
-    }
+//         return (
+//             <section className="message-detail">
+//                 <div key={message.id} className="card">
+//                     <div className="card-body">
+//                         <h4 className="card-title">
+//                             {message.message}
+//                         </h4>
+//                         <h6 className="card-title">{message.timeStamp}</h6>
+//                         <a href="# "
+//                             onClick={() => this.props.deleteMessage(message.id)
+//                                             .then(() => this.props.history.push("/messages"))}
+//                             className="card-link">Delete</a>
+//                     </div>
+//                 </div>
+//             </section>
+//         )
+//     }

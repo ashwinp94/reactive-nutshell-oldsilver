@@ -2,6 +2,7 @@ import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import MessageList from './messages/MessageList'
 import SendMessageForm from './messages/SendMessageForm'
+import MessageManager from '../modules/MessageManager'
 
 export default class ApplicationViews extends Component {
   state = {
@@ -11,6 +12,25 @@ export default class ApplicationViews extends Component {
     friends:[],
     messages: []
   }
+
+  deleteMessage = id => {
+    return fetch(`http://localhost:5002/messages/${id}`, {
+        method: "DELETE"
+    })
+        .then(e => e.json())
+        .then(() => fetch(`http://localhost:5002/messages`))
+        .then(e => e.json())
+        .then(messages => this.setState({
+            messages: messages
+        })
+        )
+}
+addMessage = newMessage => MessageManager.post(newMessage)
+        .then(() => MessageManager.getAll())
+        .then(message => this.setState({
+            messages: message
+        })
+        )
 
   render() {
     return (
@@ -32,13 +52,13 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return <MessageList messages={this.state.messages}/>
+            return <MessageList {...props} messages={this.state.messages}/>
             // Remove null and return the component which will show the messages
           }}
         />
         <Route
           path="/messages" render={props => {
-            return <SendMessageForm messages={this.state.messages}/>
+            return <SendMessageForm {...props} addMessage={this.addMessage}/>
             // Remove null and return the component which will show the messages
           }}
         />

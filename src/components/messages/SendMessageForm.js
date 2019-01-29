@@ -4,9 +4,9 @@ import React, { Component } from "react";
 export default class SendMessageForm extends Component {
   // Set initial state
   state = {
-    messages: "",
+    message: "",
     timeStamp: "",
-    userId: ""
+    userId: 1
   };
 
   // Update state whenever an input field is edited
@@ -23,22 +23,17 @@ export default class SendMessageForm extends Component {
      */
   constructNewMessage = evt => {
     evt.preventDefault();
-    if (this.state.message === "") {
-      window.alert("Please select a caretaker");
-    } else {
       const messages = {
-        message: this.state.messages,
+        message: this.state.message,
         timeStamp: this.state.timeStamp,
-        // userId: this.props.userId.find(
-        //   employee => employee.name === this.state.employee
-        // ).id
+        userId: 1
       };
 
       // Create the animal and redirect user to animal list
       this.props
         .addMessage(messages)
         .then(() => this.props.history.push("/messages"));
-    }
+    
   };
 
   render() {
@@ -46,7 +41,7 @@ export default class SendMessageForm extends Component {
       <React.Fragment>
         <form className="message">
           <div className="form-group">
-            <label htmlFor="message">Message</label>
+            <label htmlFor="message"></label>
             <input
               type="text"
               required
@@ -56,7 +51,6 @@ export default class SendMessageForm extends Component {
               placeholder="Message"
             />
           </div>
-    
           <button
             type="submit"
             onClick={this.constructNewMessage}
