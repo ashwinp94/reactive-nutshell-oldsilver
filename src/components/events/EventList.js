@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import "./Events.css"
 
 export default class EventList extends Component {
   render() {

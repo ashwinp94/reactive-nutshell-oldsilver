@@ -1,0 +1,4 @@
+.card-title > fieldset:first-child {
+  font-size: 30px;
+  font-weight: bold;
+}
