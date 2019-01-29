@@ -2,6 +2,7 @@ import { Route } from "react-router-dom";
 import React, { Component } from "react";
 import NewsManager from '../modules/NewsManager'
 import NewsList from './news/NewsList'
+import NewsForm from "./news/NewsForm";
 
 export default class ApplicationViews extends Component {
 
@@ -9,12 +10,12 @@ export default class ApplicationViews extends Component {
     newsitems: []
   }
 
-  addNews = news =>
-    NewsManager.post(news)
-      .then(() => AnimalManager.getAll())
-      .then(animals =>
+  addNews = Newnews =>
+  NewsManager.post(Newnews)
+      .then(() => NewsManager.getAll())
+      .then(news =>
         this.setState({
-          animals: animals
+          newsitems: news
         })
       );
 
@@ -31,10 +32,12 @@ export default class ApplicationViews extends Component {
   render() {
     return (
       <React.Fragment>
-        <Route path="/" render={(props) => {
-          return <NewsList newsitems={this.state.newsitems} />
-        }}
-        />
+        <Route exact path="/news" render={(props) => {
+          return <NewsList {...props}  newsitems={this.state.newsitems} />
+        }}/>
+         <Route path="/news/new" render={(props) => {
+          return <NewsForm {...props}   addNews={this.addNews}/>
+                }} />
 
         <Route
           path="/friends" render={props => {

@@ -5,10 +5,10 @@ export default class NewsForm extends Component {
     // Set initial state
 
     state = {
-        userId: this.state.userId,
-        url: this.state.url,
-        title: this.state.title,
-        synopsis: this.state.synopsis,
+        userId: 1,
+        url: [],
+        title: [],
+        synopsis: []
     }
 
     // this.constructNewAnimal = this.constructNewAnimal.bind(this)
@@ -28,15 +28,15 @@ export default class NewsForm extends Component {
     constructNewNews = evt => {
         evt.preventDefault()
             const News = {
-                userId: this.state.userId,
+                userId: 1,
                 url: this.state.url,
                 title: this.state.title,
                 synopsis: this.state.synopsis,
             };
 
             // Create the animal and redirect user to animal list
-            this.props.addOwner(Owner)
-            .then(() => this.props.history.push("/owners"));
+            this.props.addNews(News)
+            .then(() => this.props.history.push("/news"));
         }
 
     render() {
@@ -44,19 +44,28 @@ export default class NewsForm extends Component {
             <React.Fragment>
                 <form className="NewsForm">
                     <div className="form-group">
-                        <label htmlFor="ownerName">Owner name</label>
+                        <label htmlFor="url">Add Link: </label>
                         <input type="text" required
                                className="form-control"
                                onChange={this.handleFieldChange}
-                               id="ownerName"
-                               placeholder="Owner name" />
+                               id="url"
+                               placeholder="url link" />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="ownerPhone">Phone Number</label>
+                        <label htmlFor="title">News Title</label>
                         <input type="text" required
                                className="form-control"
                                onChange={this.handleFieldChange}
-                               id="ownerPhone" placeholder="Phone" />
+                               id="title"
+                               placeholder="news title" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="synopsis">Synopsis</label>
+                        <input type="text" required
+                               className="form-control"
+                               onChange={this.handleFieldChange}
+                               id="synopsis"
+                               placeholder="synopsis" />
                     </div>
                     {/* <div className="form-group">
                         <label htmlFor="employee">Assign to caretaker</label>
@@ -71,7 +80,7 @@ export default class NewsForm extends Component {
                         }
                         </select>
                     </div> */}
-                    <button type="submit" onClick={this.constructNewOwner} className="btn btn-primary">Submit</button>
+                    <button type="submit" onClick={this.constructNewNews} className="btn btn-primary">Submit</button>
                 </form>
             </React.Fragment>
         )
