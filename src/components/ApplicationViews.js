@@ -1,5 +1,8 @@
 import { Route } from "react-router-dom";
 import React, { Component } from "react";
+import MessageList from './messages/MessageList'
+import SendMessageForm from './messages/SendMessageForm'
+import MessageManager from '../modules/MessageManager'
 import NewsManager from '../modules/NewsManager'
 import NewsList from './news/NewsList'
 import NewsForm from "./news/NewsForm";
@@ -9,10 +12,12 @@ import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
 export default class ApplicationViews extends Component {
   state = {
+    newsitems: [],
     events: [],
-    newsitems: []
-  };
-
+    tasks: [],
+    friends: [],
+    messages: []
+  }
   componentDidMount() {
     EventManager.getAll().then(events => {
       this.setState({
@@ -25,7 +30,32 @@ export default class ApplicationViews extends Component {
         newsitems: allNews
       });
     });
+    MessageManager.getAll().then(allMessages => {
+      this.setState({
+        messages: allMessages
+      });
+    });
   }
+
+  deleteMessage = id => {
+    return fetch(`http://localhost:5002/messages/${id}`, {
+      method: "DELETE"
+    })
+      .then(e => e.json())
+      .then(() => fetch(`http://localhost:5002/messages`))
+      .then(e => e.json())
+      .then(messages => this.setState({
+        messages: messages
+      })
+      )
+  }
+  addMessage = newMessage => MessageManager.post(newMessage)
+    .then(() => MessageManager.getAll())
+    .then(message => this.setState({
+      messages: message
+    })
+    )
+
 
 
 
@@ -33,8 +63,8 @@ export default class ApplicationViews extends Component {
   addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
     .then(events => this.setState({
-          events: events
-      })
+      events: events
+    })
     )
     addNews = Newnews =>
     NewsManager.post(Newnews)
@@ -68,6 +98,24 @@ export default class ApplicationViews extends Component {
       );
   };
 
+<<<<<<< HEAD
+=======
+  addNews = Newnews =>
+    NewsManager.post(Newnews)
+      .then(() => NewsManager.getAll())
+      .then(news =>
+        this.setState({
+          newsitems: news
+        })
+      );
+>>>>>>> 1517252b8978a705eb5262ca70acce33d73a8323
+
+  addMessage = (message) => MessageManager.post(message)
+        .then(() => MessageManager.getAll())
+        .then(messages => this.setState({
+            messages: messages
+        })
+        )
 
   render() {
     return (
@@ -76,12 +124,12 @@ export default class ApplicationViews extends Component {
                   return <NewsList newsitems={this.state.newsitems} />
                 }} />
         <Route exact path="/news" render={(props) => {
-          return <NewsList {...props}  newsitems={this.state.newsitems}
-                                        deleteNews={this.deleteNews}/>
-        }}/>
-         <Route path="/news/new" render={(props) => {
-          return <NewsForm {...props}   addNews={this.addNews}/>
-                }} />
+          return <NewsList {...props} newsitems={this.state.newsitems}
+            deleteNews={this.deleteNews} />
+        }} />
+        <Route path="/news/new" render={(props) => {
+          return <NewsForm {...props} addNews={this.addNews} />
+        }} />
 
         <Route
           path="/friends" render={props => {
@@ -92,7 +140,13 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return null
+            return <MessageList {...props} messages={this.state.messages} />
+            // Remove null and return the component which will show the messages
+          }}
+        />
+        <Route
+          path="/messages" render={props => {
+            return <SendMessageForm {...props} addMessage={this.addMessage} />
             // Remove null and return the component which will show the messages
           }}
         />
@@ -106,13 +160,13 @@ export default class ApplicationViews extends Component {
 
         {/*BEGIN EVENT ROUTING*/}
         <Route exact path="/events" render={(props) => {
-            return <EventList {...props}
-                              events={this.state.events} />
-          }} />
+          return <EventList {...props}
+            events={this.state.events} />
+        }} />
         {/*addEvent route*/}
         <Route path="/events/new" render={(props) => {
           return <EventForm {...props}
-                            addEvent={this.addEvent} />
+            addEvent={this.addEvent} />
         }} />
         {/*updateEvent route*/}
         <Route path="/events/:eventId(\d+)/edit" render={props => {
