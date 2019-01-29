@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
+
 import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
 import TaskForm from './task/TaskForm'
 import TaskEditForm from './task/TaskEditForm'
-import MessageList from './messages/MessageList'
+
 import SendMessageForm from './messages/SendMessageForm'
+import MessageList from './messages/MessageList'
 import MessageManager from '../modules/MessageManager'
+
 import NewsManager from '../modules/NewsManager'
 import NewsList from './news/NewsList'
 import NewsForm from "./news/NewsForm";
+
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
@@ -46,6 +50,35 @@ export default class ApplicationViews extends Component {
     });
   }
 
+  addMessage = newMessage => MessageManager.post(newMessage)
+  .then(() => MessageManager.getAll())
+  .then(message => this.setState({
+    messages: message
+  })
+  )
+  addEvent = (event) => EventManager.post(event)
+  .then(() => EventManager.getAll())
+  .then(events => this.setState({
+    events: events
+  })
+  )
+
+  addTask = (task) => TaskManager.postNewTask(task)
+  .then(() => TaskManager.getAll())
+  .then(task => this.setState({
+      tasks: task
+    })
+  )
+  addNews = Newnews =>
+  NewsManager.post(Newnews)
+    .then(() => NewsManager.getAll())
+    .then(news =>
+      this.setState({
+        newsitems: news
+      })
+    );
+
+
   deleteMessage = id => {
     return fetch(`http://localhost:5002/messages/${id}`, {
       method: "DELETE"
@@ -58,36 +91,27 @@ export default class ApplicationViews extends Component {
       })
       )
   }
-  addMessage = newMessage => MessageManager.post(newMessage)
-    .then(() => MessageManager.getAll())
-    .then(message => this.setState({
-      messages: message
+  deleteNews = id => {
+    return fetch(`http://localhost:5002/newsitems/${id}`, {
+      method: "DELETE"
     })
-    )
+      .then(response => response.json())
+      .then(() => fetch(`http://localhost:5002/newsitems`))
+      .then(response => response.json())
+      .then(news =>
+        this.setState({
+          newsitems: news
+        })
+      );
+  };
 
 
-
-
-
-  addEvent = (event) => EventManager.post(event)
-    .then(() => EventManager.getAll())
-    .then(events => this.setState({
-      events: events
-    })
-    )
-
-    addTask = (task) => TaskManager.postNewTask(task)
-    .then(() => TaskManager.getAll())
+  deleteTask = (id) => {
+    return TaskManager.deleteTask(id)
     .then(task => this.setState({
-        tasks: task
-      })
-    )
-    deleteTask = (id) => {
-      return TaskManager.deleteTask(id)
-      .then(task => this.setState({
-        tasks: task
-      }))
-    }
+      tasks: task
+    }))
+  }
 
     editTask = (taskId, existingObj) => {
       return TaskManager.editTask(taskId, existingObj)
@@ -110,35 +134,9 @@ export default class ApplicationViews extends Component {
       })
     })
   }
-  deleteNews = id => {
-    return fetch(`http://localhost:5002/newsitems/${id}`, {
-      method: "DELETE"
-    })
-      .then(response => response.json())
-      .then(() => fetch(`http://localhost:5002/newsitems`))
-      .then(response => response.json())
-      .then(news =>
-        this.setState({
-          newsitems: news
-        })
-      );
-  };
 
-  addNews = Newnews =>
-    NewsManager.post(Newnews)
-      .then(() => NewsManager.getAll())
-      .then(news =>
-        this.setState({
-          newsitems: news
-        })
-      );
 
-  addMessage = (message) => MessageManager.post(message)
-        .then(() => MessageManager.getAll())
-        .then(messages => this.setState({
-            messages: messages
-        })
-        )
+
 
   render() {
     return (
