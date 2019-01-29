@@ -99,6 +99,22 @@ export default class ApplicationViews extends Component {
         })
       );
 
+  componentDidMount() {
+    // Example code. Make this fit into how you have written yours.
+    MessageManager.getAll().then(allMessages => {
+        this.setState({
+            messages: allMessages
+        })
+    })
+  }
+
+  addMessage = (message) => MessageManager.post(message)
+        .then(() => MessageManager.getAll())
+        .then(messages => this.setState({
+            messages: messages
+        })
+        )
+
   render() {
     return (
       <React.Fragment>
@@ -132,6 +148,17 @@ export default class ApplicationViews extends Component {
             // Remove null and return the component which will show the messages
           }}
         />
+         <Route path="/messages" render={(props) => {
+                    return <SendMessageForm {...props}
+                        // addAnimal={this.addAnimal}
+                        messages={this.state.messages} />
+                }} />
+
+<Route path="/messages" render={(props) => {
+                    return <Title {...props}
+                        // addAnimal={this.addAnimal}
+                        messages={this.state.messages} />
+                }} />
 
         <Route
           path="/tasks" render={props => {
