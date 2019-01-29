@@ -24,7 +24,7 @@ export default class TaskList extends Component{
               </h2> 
               <Link 
               className="nav-link" 
-              to={`/tasks/${task.id}`}>Edit</Link>
+              to={`/tasks/${task.id}/edit`}>Edit</Link>
 
               <a href="#"
                   onClick={() => this.props.deleteTask(task.id)

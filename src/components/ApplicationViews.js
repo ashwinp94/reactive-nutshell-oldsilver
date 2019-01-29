@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
 import TaskForm from './task/TaskForm'
+import TaskEditForm from './task/TaskEditForm'
 
 import NewsManager from '../modules/NewsManager'
 import NewsList from './news/NewsList'
@@ -146,7 +147,7 @@ export default class ApplicationViews extends Component {
               }} />
 
         <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
-            return <TaskForm {...props} 
+            return <TaskEditForm {...props} 
             editTask = {this.editTask}/>
           })} />
         
