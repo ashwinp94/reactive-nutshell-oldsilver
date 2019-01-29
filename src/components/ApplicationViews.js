@@ -2,7 +2,8 @@ import { Route } from "react-router-dom";
 import React, { Component } from "react";
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
-import EventManager from "../modules/EventManager"
+import EventManager from "../modules/EventManager";
+import EventEdit from "./events/EventEdit"
 export default class ApplicationViews extends Component {
   state = {
     events: []
@@ -77,7 +78,7 @@ export default class ApplicationViews extends Component {
         }} />
         {/*updateEvent route*/}
         <Route path="/events/:eventId(\d+)/edit" render={props => {
-          return <EventForm {...props} updateEvent={this.updateEvent}/>
+          return <EventEdit {...props} updateEvent={this.updateEvent}/>
         }} />
       </React.Fragment>
     )
