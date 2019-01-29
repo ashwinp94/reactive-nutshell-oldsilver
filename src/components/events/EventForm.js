@@ -29,9 +29,6 @@ export default class EventForm extends Component {
     this.props.addEvent(event).then(() => this.props.history.push("/events"))
   }
 
-  //updateExistingEvent 
-  //--componentDidMount
-
 
 
   render() {
@@ -48,7 +45,7 @@ export default class EventForm extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="eventDate">Date</label>
-            <input type="text" required
+            <input type="date" required
                    className="form-control"
                    onChange={this.handleFieldChange}
                    id="eventDate"
@@ -56,7 +53,7 @@ export default class EventForm extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="eventTime">Time</label>
-            <input type="text" required
+            <input type="time" required
                    className="form-control"
                    onChange={this.handleFieldChange}
                    id="eventTime"
@@ -72,6 +69,7 @@ export default class EventForm extends Component {
           </div>
 
           <button type="submit" onClick={this.saveEvent} className="btn btn-primary">Save</button>
+
         </form>
       </React.Fragment>
     )
