@@ -35,6 +35,14 @@ export default class ApplicationViews extends Component {
           events: events
       })
     )
+    addNews = Newnews =>
+    NewsManager.post(Newnews)
+        .then(() => NewsManager.getAll())
+        .then(news =>
+          this.setState({
+            newsitems: news
+          })
+        );
 
   deleteNews = id => {
     return fetch(`http://localhost:5002/newsitems/${id}`, {
@@ -50,14 +58,6 @@ export default class ApplicationViews extends Component {
       );
   };
 
-  addNews = Newnews =>
-  NewsManager.post(Newnews)
-      .then(() => NewsManager.getAll())
-      .then(news =>
-        this.setState({
-          newsitems: news
-        })
-      );
 
   render() {
     return (
