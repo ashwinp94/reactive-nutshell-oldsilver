@@ -58,7 +58,10 @@ export default class ApplicationViews extends Component {
 
   addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
-    .then(events => this.setState({
+    .then(events => {
+      //sort, setState to whatever the sort function returns
+    }
+      this.setState({
       events: events
     })
     )
