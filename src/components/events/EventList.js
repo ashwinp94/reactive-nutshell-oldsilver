@@ -16,6 +16,7 @@ export default class EventList extends Component {
             </button>
           </div>
 
+
           <section className="events">
           {/*.map loops thru list of events*/}
           {this.props.events.map(event => (
@@ -35,3 +36,6 @@ export default class EventList extends Component {
     )
   }
 }
+//.map access index position of item i'm currently looping thru
+//then 0 will be first item
+//add additional class for css as needed

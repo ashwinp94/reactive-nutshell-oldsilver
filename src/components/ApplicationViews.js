@@ -56,10 +56,6 @@ export default class ApplicationViews extends Component {
     })
     )
 
-
-
-
-
   addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
     .then(events => this.setState({
