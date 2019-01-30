@@ -14,6 +14,7 @@ import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
+import EditMessage from "./messages/EditMessage"
 export default class ApplicationViews extends Component {
   state = {
     newsitems: [],
@@ -65,10 +66,6 @@ export default class ApplicationViews extends Component {
     })
     )
 
-
-
-
-
   addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
     .then(events => this.setState({
@@ -110,6 +107,17 @@ export default class ApplicationViews extends Component {
       })
     })
   }
+
+  updateMessage = (messageId, editedMessageObj) => {
+    return MessageManager.put(messageId, editedMessageObj)
+    .then(() => MessageManager.getAll())
+    .then(message => {
+      this.setState({
+        messages: message
+      })
+    })
+  }
+
   deleteNews = id => {
     return fetch(`http://localhost:5002/newsitems/${id}`, {
       method: "DELETE"
@@ -172,6 +180,9 @@ export default class ApplicationViews extends Component {
             // Remove null and return the component which will show the messages
           }}
         />
+        <Route path="/messages/:messageId(\d+)/edit" render={props => {
+          return <EditMessage {...props} updateMessage={this.updateMessage}/>
+        }} />
 
         <Route exact path="/tasks" render={(props) => {
           return <TaskList {...props}

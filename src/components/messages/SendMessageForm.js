@@ -56,7 +56,7 @@ export default class SendMessageForm extends Component {
             onClick={this.constructNewMessage}
             className="btn btn-primary"
           >
-            Submit
+            Send
           </button>
         </form>
       </React.Fragment>

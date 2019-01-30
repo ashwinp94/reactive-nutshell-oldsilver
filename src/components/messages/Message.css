@@ -1,0 +1,8 @@
+.scroll {
+        box-sizing: content-box;
+        height: 250px;
+        border: 2px black;
+        overflow:  scroll; 
+        overflow: hidden;
+        overflow: auto;
+}
