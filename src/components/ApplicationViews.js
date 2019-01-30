@@ -28,16 +28,16 @@ export default class ApplicationViews extends Component {
       this.setState({
         events: events
       })
-    })
+    });
 
     TaskManager.getAll().then(allTasks => {
       this.setState({
         tasks:allTasks
       })
-    })
+    });
 
     NewsManager.getAll().then(allNews => {
-      this.setState({
+        this.setState({
         newsitems: allNews
       });
     });
@@ -66,10 +66,6 @@ export default class ApplicationViews extends Component {
       messages: message
     })
     )
-
-
-
-
 
   addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
@@ -153,11 +149,13 @@ export default class ApplicationViews extends Component {
   render() {
     return (
       <React.Fragment>
+
         <Route exact path="/news" render={(props) => {
           return <NewsList {...props}
             newsitems={this.state.newsitems}
             deleteNews={this.deleteNews}/>
         }}/>
+
         <Route path="/news/new" render={(props) => {
           return <NewsForm {...props}
           addNews={this.addNews}/>
