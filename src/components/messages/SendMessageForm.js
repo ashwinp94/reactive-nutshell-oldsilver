@@ -35,6 +35,18 @@ export default class SendMessageForm extends Component {
         .then(() => this.props.history.push("/messages"));
     
   };
+//   this.props.addMessage(newMessage);
+//         this.scrollToBottom();
+//     }
+
+//     // Set scrollbar to bottom
+//     componentDidMount() {
+//         this.scrollToBottom();
+//     }
+//     scrollToBottom() {
+//         const {chatBox} = this.refs;
+//         chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
+//     }
 
   render() {
     return (
