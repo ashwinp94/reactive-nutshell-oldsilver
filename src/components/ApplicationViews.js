@@ -18,13 +18,15 @@ import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
+
 export default class ApplicationViews extends Component {
 
   state = {
     newsitems: [],
     events: [],
     tasks:[],
-    messages:[]
+    messages:[],
+    userId: 1
   };
 
   componentDidMount() {
@@ -37,20 +39,20 @@ export default class ApplicationViews extends Component {
     TaskManager.getAll().then(allTasks => {
       this.setState({
         tasks:allTasks
+        })
       })
-    })
 
-    NewsManager.getAll().then(allNews => {
-      this.setState({
-        newsitems: allNews
+      NewsManager.getYourNews(this.state.userId).then(allNews => {
+        this.setState({
+          newsitems: allNews
+        });
       });
-    });
-    MessageManager.getAll().then(allMessages => {
-      this.setState({
-        messages: allMessages
+      MessageManager.getAll().then(allMessages => {
+        this.setState({
+          messages: allMessages
+        });
       });
-    });
-  }
+    }
 
   addMessage = newMessage => MessageManager.post(newMessage)
   .then(() => MessageManager.getAll())
@@ -164,17 +166,17 @@ export default class ApplicationViews extends Component {
         />
 
         <Route
-          path="/messages" render={props => {
-            return <MessageList {...props} messages={this.state.messages} />
-            // Remove null and return the component which will show the messages
-          }}
-        />
-        <Route
-          path="/messages" render={props => {
-            return <SendMessageForm {...props} addMessage={this.addMessage} />
-            // Remove null and return the component which will show the messages
-          }}
-        />
+            path="/messages" render={props => {
+              return <MessageList {...props} messages={this.state.messages} />
+              // Remove null and return the component which will show the messages
+            }}
+          />
+          <Route
+            path="/messages" render={props => {
+              return <SendMessageForm {...props} addMessage={this.addMessage} />
+              // Remove null and return the component which will show the messages
+            }}
+          />
 
         <Route exact path="/tasks" render={(props) => {
           return <TaskList {...props}

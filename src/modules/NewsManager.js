@@ -7,6 +7,9 @@ export default {
   getAll() {
     return fetch(`${remoteURL}/newsitems`).then(e => e.json());
   },
+  getYourNews(id){
+    return fetch(`${remoteURL}/newsitems?userId=${id}`).then(e => e.json());
+  },
   post(newNews) {
     return fetch(`${remoteURL}/newsitems`, {
       method: "POST",
