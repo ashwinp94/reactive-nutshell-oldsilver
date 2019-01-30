@@ -36,10 +36,10 @@ export default class ApplicationViews extends Component {
       TaskManager.getAll().then(allTasks => {
         this.setState({
           tasks:allTasks
+          })
         })
-      })
 
-      NewsManager.getAll().then(allNews => {
+      NewsManager.getYourNews(this.state.userId).then(allNews => {
         this.setState({
           newsitems: allNews
         });
@@ -50,7 +50,7 @@ export default class ApplicationViews extends Component {
         });
       });
     }
-
+    
     //MESSAGES
     deleteMessage = id => {
       return fetch(`http://localhost:5002/messages/${id}`, {
@@ -162,7 +162,7 @@ export default class ApplicationViews extends Component {
           }} />
 
           <Route path="/news/new" render={(props) => {
-            return <NewsForm {...props}   
+            return <NewsForm {...props}
             addNews={this.addNews}/>
                   }} />
 
@@ -205,13 +205,13 @@ export default class ApplicationViews extends Component {
           <Route 
             path="/tasks/new" render={(props) => {
               return <TaskForm {...props}
-                addTask={this.addTask} 
+                addTask={this.addTask}
                 tasks={this.state.tasks}
                 />
                 }} />
 
           <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
-              return <TaskEditForm {...props} 
+              return <TaskEditForm {...props}
               editTask = {this.editTask}/>
             })} />
 
