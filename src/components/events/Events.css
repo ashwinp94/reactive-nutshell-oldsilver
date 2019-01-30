@@ -1,4 +1,5 @@
-.card-title > fieldset:first-child {
-  font-size: 30px;
+.card-items > div:first-child {
   font-weight: bold;
+  font-size: 20px;
+  background-color: rgb(201, 173, 178)
 }
