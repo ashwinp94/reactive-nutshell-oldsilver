@@ -1,8 +1,23 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import "./Events.css"
 
 export default class EventList extends Component {
   render() {
+    const sortedEventItems = [].concat(this.props.events)
+                          .sort((a,b) => {return new Date(a.eventDate) - new Date(b.eventDate)})
+                          .map(event =>
+                                  <div key={event.id} className="card">
+                                    <div className="card-body">
+                                      <p>{event.eventName}</p>
+                                      <p>{event.eventDate}</p>
+                                      <p>{event.eventTime}</p>
+                                      <p>{event.eventLocation}</p>
+                                      <Link className="nav-link" to={`/events/${event.id}/edit`}>Edit</Link>
+                                    </div>
+                                  </div>
+                          )
+
     return (
       <React.Fragment>
           <div className="eventBtn">
@@ -16,20 +31,10 @@ export default class EventList extends Component {
           </div>
 
           <section className="events">
-          {/*.map loops thru list of events*/}
-          {this.props.events.map(event => (
-            <div key={event.id} className="card">
-              <div className="card-body">
-                <h5 className="card-title">
-                  {event.eventName} {event.eventDate}
-                  {event.eventTime} {event.eventLocation}
-                </h5>
-
-                <Link className="nav-link" to={`/events/${event.id}/edit`}>Edit</Link>
-              </div>
-            </div>
-          ))}
+          <h2>Upcoming Events</h2>
+            <div className="card-items">{sortedEventItems}</div>
           </section>
+
       </React.Fragment>
     )
   }
