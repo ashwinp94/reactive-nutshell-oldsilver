@@ -1,6 +1,18 @@
 import React, { Component }  from 'react'
 import { Link } from 'react-router-dom'
 export default class TaskList extends Component{
+state = {
+  complete: false
+}
+
+handleFieldChange = () => {
+  this.setState({
+    complete: !this.state.complete
+  })
+  // this.completeTask()
+}
+
+
   render(){
     return(
       <>
@@ -17,19 +29,31 @@ export default class TaskList extends Component{
         <section className="tasks">
         {
           this.props.tasks.map(task => 
-            <div key={task.id}>
+          <div key={task.id}>
               <h2>
+                <input 
+                id = {task.id}
+                type = "checkbox"
+                onClick={() => {
+                  const completeTask = {
+                    task: task.task,
+                    expectedCompletionDate: task.expectedCompletionDate,
+                    complete: !this.state.complete,
+                    userId: 1
+                  }
+                  console.log(completeTask)
+                  this.props.updateTasksList(task.id , completeTask)
+                  .then(() => this.props.history.push("/tasks"))
+                  }
+                }
+                />
                 {task.task} 
                 <p>{task.expectedCompletionDate}</p>
-              </h2> 
-              <Link 
-              className="nav-link" 
-              to={`/tasks/${task.id}/edit`}>Edit</Link>
 
-              <a href="#"
-                  onClick={() => this.props.deleteTask(task.id)
-                  .then(() => this.props.history.push("/tasks"))}
-                  className="card-link">Delete</a>
+              </h2>
+              <Link 
+                className="nav-link" 
+                to={`/tasks/${task.id}/edit`}>Edit</Link>
             </div>
           )
         }

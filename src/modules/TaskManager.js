@@ -8,13 +8,15 @@ export default{
   getAll(){
     return fetch(`${localURL}/tasks`).then(res => res.json())
   },
-  deleteTask(id){
-    return fetch(`${localURL}/tasks/${id}`,{
-      method:"DELETE"
+  getAllNonCompletedTasks(taskId, existingObj){
+    return fetch(`${localURL}/tasks/${taskId}`, {
+      method:"PUT",
+      headers:{
+        "Content-Type": "application/JSON"
+      },
+      body:JSON.stringify(existingObj)
     })
-    .then(r => r.json())
-    .then(() => fetch(`${localURL}/tasks`))
-    .then(e => e.json())
+    .then(response => response.json())
   },
   postNewTask(newTaskObj){
     return fetch(`${localURL}/tasks`,{

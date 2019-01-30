@@ -19,12 +19,14 @@ import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
 export default class ApplicationViews extends Component {
+
   state = {
     newsitems: [],
     events: [],
     tasks:[],
     messages:[]
   };
+
   componentDidMount() {
     EventManager.getAll().then(events => {
       this.setState({
@@ -69,6 +71,17 @@ export default class ApplicationViews extends Component {
       tasks: task
     })
   )
+
+  updateTasksList = (taskId, existingObj) => {
+    return TaskManager.getAllNonCompletedTasks(taskId, existingObj)
+    .then(() => TaskManager.getAll())
+    .then(task => {
+      this.setState({
+        tasks:task
+      })
+    })
+  }
+
   addNews = Newnews =>
   NewsManager.post(Newnews)
     .then(() => NewsManager.getAll())
@@ -105,23 +118,15 @@ export default class ApplicationViews extends Component {
       );
   };
 
-
-  deleteTask = (id) => {
-    return TaskManager.deleteTask(id)
-    .then(task => this.setState({
-      tasks: task
-    }))
-  }
-
-    editTask = (taskId, existingObj) => {
-      return TaskManager.editTask(taskId, existingObj)
-      .then(() => TaskManager.getAll())
-      .then(tasks => {
-        this.setState({
-          tasks:tasks
-        })
+  editTask = (taskId, existingObj) => {
+    return TaskManager.editTask(taskId, existingObj)
+    .then(() => TaskManager.getAll())
+    .then(tasks => {
+      this.setState({
+        tasks:tasks
       })
-    }
+    })
+  }
 
 
 
@@ -174,7 +179,8 @@ export default class ApplicationViews extends Component {
         <Route exact path="/tasks" render={(props) => {
           return <TaskList {...props}
           tasks={this.state.tasks} 
-          deleteTask={this.deleteTask} />
+          updateTasksList={this.updateTasksList}
+          />
       }} />
         <Route 
           path="/tasks/new" render={(props) => {

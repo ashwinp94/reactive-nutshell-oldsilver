@@ -4,6 +4,7 @@ export default class TaskForm extends Component{
   state = {
     taskName:"",
     date:"",
+    complete:"",
     userId: 1
   }
 
@@ -13,12 +14,13 @@ export default class TaskForm extends Component{
     console.log(evt.target.id)
     this.setState(stateToChange)
   }
+  
   constructNewTask = evt => {
     evt.preventDefault()
         const tasks = {
             task: this.state.taskName,
             expectedCompletionDate:this.state.date,
-            complete: false,
+            complete: this.state.complete,
             userId:this.state.userId  
         }
           this.props.addTask(tasks).then(() => this.props.history.push("/tasks"));
