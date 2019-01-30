@@ -8,7 +8,8 @@ export default class NewsForm extends Component {
         userId: 1,
         url: [],
         title: [],
-        synopsis: []
+        synopsis: [],
+        newsDate: []
     }
 
     // this.constructNewAnimal = this.constructNewAnimal.bind(this)
@@ -32,6 +33,7 @@ export default class NewsForm extends Component {
                 url: this.state.url,
                 title: this.state.title,
                 synopsis: this.state.synopsis,
+                newsDate: new Date()
             };
 
             // Create the animal and redirect user to animal list
@@ -67,6 +69,7 @@ export default class NewsForm extends Component {
                                id="synopsis"
                                placeholder="synopsis" />
                     </div>
+
                     {/* <div className="form-group">
                         <label htmlFor="employee">Assign to caretaker</label>
                         <select

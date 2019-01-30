@@ -14,27 +14,29 @@ import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
+
 export default class ApplicationViews extends Component {
-    state = {
-      newsitems: [],
-      events: [],
-      tasks:[],
-      messages:[]
-    };
-    componentDidMount() {
-      EventManager.getAll().then(events => {
-        this.setState({
-          events: events
+  state = {
+    newsitems: [],
+    events: [],
+    tasks:[],
+    messages:[],
+    userId: 1
+  };
+  componentDidMount() {
+    EventManager.getAll().then(events => {
+      this.setState({
+        events: events
+      })
+    })
+
+    TaskManager.getAll().then(allTasks => {
+      this.setState({
+        tasks:allTasks
         })
       })
 
-      TaskManager.getAll().then(allTasks => {
-        this.setState({
-          tasks:allTasks
-        })
-      })
-
-      NewsManager.getAll().then(allNews => {
+      NewsManager.getYourNews(this.state.userId).then(allNews => {
         this.setState({
           newsitems: allNews
         });
@@ -65,30 +67,20 @@ export default class ApplicationViews extends Component {
       })
       )
 
-  /*  let sortedEvents = events.sort((a, b) => 
-    new Date(...a.eventDate.split('/').reverse()) - new Date(...b.eventDate.split('/').reverse())); */
-
-    // addEvent = (event) => EventManager.post(event)
-    //   .then(() => EventManager.getAll())
-    //   .then(events => {  
-    //     //sort, setState to whatever the sort function returns
-    //     events.sort ((a,b) => {
-    //       // Turn your strings into dates, and then subtract them
-    //       // to get a value that is either negative, positive, or zero.
-    //       new Date(a.eventDate) - new Date(b.eventDate) 
-    //       this.setState({
-    //         events: events
-    //     })
-      
-    //   })
-    // } 
-
-    addEvent = (event) => EventManager.post(event)
+  addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
     .then(events => this.setState({
-          events:events
-        })
-      )
+      events: events
+    })
+    )
+    addNews = Newnews =>
+    NewsManager.post(Newnews)
+        .then(() => NewsManager.getAll())
+        .then(news =>
+          this.setState({
+            newsitems: news
+          })
+        );
 
     addTask = (task) => TaskManager.postNewTask(task)
       .then(() => TaskManager.getAll())
@@ -158,12 +150,13 @@ export default class ApplicationViews extends Component {
       return (
         <React.Fragment>
           <Route exact path="/news" render={(props) => {
-            return <NewsList {...props}  
-              newsitems={this.state.newsitems}              
+            return <NewsList {...props}
+              newsitems={this.state.newsitems}
               deleteNews={this.deleteNews}/>
           }}/>
+
           <Route path="/news/new" render={(props) => {
-            return <NewsForm {...props}   
+            return <NewsForm {...props}
             addNews={this.addNews}/>
                   }} />
 
@@ -189,22 +182,22 @@ export default class ApplicationViews extends Component {
 
           <Route exact path="/tasks" render={(props) => {
             return <TaskList {...props}
-            tasks={this.state.tasks} 
+            tasks={this.state.tasks}
             deleteTask={this.deleteTask} />
         }} />
-          <Route 
+          <Route
             path="/tasks/new" render={(props) => {
               return <TaskForm {...props}
-                addTask={this.addTask} 
+                addTask={this.addTask}
                 tasks={this.state.tasks}
                 />
                 }} />
 
           <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
-              return <TaskEditForm {...props} 
+              return <TaskEditForm {...props}
               editTask = {this.editTask}/>
             })} />
-          
+
           <Route
             path="/tasks" render={props => {
               return null
