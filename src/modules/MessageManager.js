@@ -15,5 +15,14 @@ export default {
       },
       body: JSON.stringify(newMessage)
     }).then(data => data.json());
+  },
+  put(messageId, existingMessage) {
+    return fetch(`${remoteURL}/messages/${messageId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/JSON"
+      },
+      body: JSON.stringify(existingMessage)
+    }).then(data => data.json())
   }
 };

@@ -1,26 +1,61 @@
 import React from 'react'
+import { Link } from "react-router-dom";
+import "./Message.css"
 
 export default class MessageList extends React.Component {
-    render() {
-      return (
-        <React.Fragment>
-        <div className="message-list">                 
-          {this.props.messages.map(message => {
-            return (
-                
-             <p key={message.id}>
-               <div>
-                 {message.userId}
-               </div>
-               <div>
-                 {message.message}
-               </div>
-             </p>
-           )
-         })}
-       </div>
 
-       </React.Fragment>
-      )
+
+    // Set scrollbar to bottom
+    componentDidMount() {
+        this.scrollToBottom();
+      }
+    componentDidUpdate() {
+        this.scrollToBottom();
+      }
+    scrollToBottom() {
+        const chatBox  = this.refs.chatBox;
+        console.log(chatBox)
+        if (chatBox) {
+            // chatBox.scrollTo(0, 250)
+            // chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
+            console.log(chatBox.scrollHeight);
+            console.log(chatBox.clientHeight)
+            chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
+        }
     }
-  }
+
+    // userConditional= (userId) => {
+    //     if (this.props.message.userId === 1) {
+    //         let style = "current_user";
+    //         return style;
+    //     }
+    //     else {
+    //         let style = "other_user"
+    //         return style;
+    //     }
+    // }
+
+
+    render() {
+        return (
+            <React.Fragment>
+                <div className="scroll" ref={`chatBox`}>
+                    {this.props.messages.map(message => {
+                        return (
+                        <div className="messages">
+                            <p key={message.id}>
+                                <p className="messageBox">{message.message}</p>
+                                
+                                <Link className="nav-link" to={`/messages/${message.id}/edit`}>Edit</Link>
+                            </p>
+                        </div>
+                        )
+                    })}
+                    <div ref={this.myRef}></div>
+                </div>
+
+
+            </React.Fragment>
+        )
+    }
+}

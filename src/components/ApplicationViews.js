@@ -17,6 +17,8 @@ import NewsForm from "./news/NewsForm";
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
+import EditMessage from "./messages/EditMessage"
+import FriendsForm from "./friends/FriendsForm"
 import EventEdit from "./events/EventEdit";
 import Login from "./authentication/Login"
 export default class ApplicationViews extends Component {
@@ -48,10 +50,9 @@ export default class ApplicationViews extends Component {
         })
       })
 
-      NewsManager.getYourNews(this.state.userId).then(allNews => {
-        this.setState({
-          newsitems: allNews
-        });
+    NewsManager.getYourNews(this.state.userId).then(allNews => {
+      this.setState({
+        newsitems: allNews
       });
 
       MessageManager.getAll().then(allMessages => {
@@ -59,7 +60,8 @@ export default class ApplicationViews extends Component {
           messages: allMessages
         });
       });
-    }
+    });
+  }
 
 //=============================Add functions=============================//
   addMessage = newMessage => MessageManager.post(newMessage)
@@ -140,6 +142,16 @@ export default class ApplicationViews extends Component {
     })
   }
 
+  updateMessage = (messageId, editedMessageObj) => {
+    return MessageManager.put(messageId, editedMessageObj)
+    .then(() => MessageManager.getAll())
+    .then(message => {
+      this.setState({
+        messages: message
+      })
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -216,8 +228,7 @@ export default class ApplicationViews extends Component {
                 return <Redirect to="/login" />
               }
           }} />
-
-          <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
+            <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
             if (this.isAuthenticated()) {
               return <TaskEditForm {...props}
                 editTask = {this.editTask}/>
@@ -226,33 +237,41 @@ export default class ApplicationViews extends Component {
             }
           })} />
 
-          {/*BEGIN EVENT ROUTING*/}
-          <Route exact path="/events" render={(props) => {
-            if (this.isAuthenticated()) {
-              return <EventList {...props}
-                events={this.state.events} />
-            } else {
-              return <Redirect to="/login" />
-            }
-          }} />
+        <Route exact path="/messages/:messageId(\d+)/edit" render={props => {
+          if (this.isAuthenticated()) {
+            return <EditMessage {...props} updateMessage={this.updateMessage} />
+          } else {
+            return <Redirect to="/login" />
+          }
+        }} />
 
-          <Route path="/events/new" render={(props) => {
-            if (this.isAuthenticated()) {
-              return <EventForm {...props}
-                addEvent={this.addEvent} />
-            } else {
-              return <Redirect to="/login" />
-            }
-          }} />
+        {/*BEGIN EVENT ROUTING*/}
+        <Route exact path="/events" render={(props) => {
+          if (this.isAuthenticated()) {
+            return <EventList {...props}
+              events={this.state.events} />
+          } else {
+            return <Redirect to="/login" />
+          }
+        }} />
 
-          <Route path="/events/:eventId(\d+)/edit" render={props => {
-            if (this.isAuthenticated()) {
-              return <EventEdit {...props} updateEvent={this.updateEvent}/>
-            } else {
-              return <Redirect to="/login" />
-            }
-          }} />
+        <Route path="/events/new" render={(props) => {
+          if (this.isAuthenticated()) {
+            return <EventForm {...props}
+              addEvent={this.addEvent} />
+          } else {
+            return <Redirect to="/login" />
+          }
+        }} />
+
+        <Route path="/events/:eventId(\d+)/edit" render={props => {
+          if (this.isAuthenticated()) {
+            return <EventEdit {...props} updateEvent={this.updateEvent} />
+          } else {
+            return <Redirect to="/login" />
+          }
+        }} />
       </React.Fragment>
     )
-        }
+  }
 }
