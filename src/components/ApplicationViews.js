@@ -14,6 +14,8 @@ import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
+import Login from "./authentication/Login"
+
 
 export default class ApplicationViews extends Component {
   state = {
@@ -23,6 +25,8 @@ export default class ApplicationViews extends Component {
     messages:[],
     userId: 1
   };
+  isAuthenticated = () => sessionStorage.getItem("credentials") !== null
+
   componentDidMount() {
     EventManager.getAll().then(events => {
       this.setState({
@@ -104,8 +108,6 @@ export default class ApplicationViews extends Component {
           })
         })
       }
-
-
 
     updateEvent = (eventId, editedEventObj) => {
       return EventManager.put(eventId, editedEventObj)
