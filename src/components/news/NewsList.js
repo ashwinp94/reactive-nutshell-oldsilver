@@ -1,21 +1,22 @@
 import React, { Component } from 'react'
-
+import "./News.css"
 export default class NewsList extends Component {
     state = {
         currentUserId: 1,
     }
     render() {
         const sortedNewsItems =
-              [].concat(this.props.newsitems)
+            [].concat(this.props.newsitems)
                 .sort((a,b) => {return new Date(a.newsDate).getTime() - new Date(b.newsDate).getTime()})
                 .reverse()
                 .map(newsitem =>
-                        <div key={newsitem.id}>
+                        <div className="newsCards" key={newsitem.id}>
                         <h3>{newsitem.title}</h3>
-                        <h4>{newsitem.url}</h4>
-                        <h5>{newsitem.synopsis}</h5>
+                        <p>{newsitem.url}</p>
+                        <p>{newsitem.synopsis}</p>
                         <h6>{newsitem.newsDate}</h6>
                         <button type="button"
+                                id="deleteButton"
                                 onClick = {() => this.props.deleteNews(newsitem.id)}
                                 className="btn btn-success">
                             Delete

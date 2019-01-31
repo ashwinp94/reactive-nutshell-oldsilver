@@ -1,0 +1,16 @@
+.newsButton{
+  display:flex;
+  justify-content:center;
+  flex-direction:row;
+  margin-top:10px;
+
+}
+.newsCards{
+  display:flex;
+  justify-content: space-around;
+  flex-direction:column;
+  margin-top:20px;
+  flex-wrap:wrap;
+  width:20%;
+  border:1px solid gray;
+}
