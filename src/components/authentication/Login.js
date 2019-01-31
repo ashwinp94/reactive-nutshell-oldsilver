@@ -41,8 +41,8 @@ onLogin = (evt) => {
 
 render() {
     return (
-        <form onSubmit={this.onLogin}>
-            <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <form className="logInForm" onSubmit={this.onLogin}>
+            <h1 className="h3 mb-3 font-weight-normal title">Please sign in</h1>
             <label htmlFor="inputUsername">
                 Username
             </label>
@@ -57,10 +57,10 @@ render() {
                     id="password"
                     placeholder="Password"
                     required="" />
-            <button type="submit">
+            <button className="signInButton" type="submit">
                 Sign in
             </button>
-            <button type="button"
+            <button className="registerButton" type="button"
                         onClick={()=> this.props.history.push("/login/new")}
                         className="btn btn-success">
                     Register
