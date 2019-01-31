@@ -12,6 +12,7 @@ export default class Login extends Component {
       password: ""
   }
 
+
   // Update state whenever an input field is edited
   handleFieldChange = (evt) => {
       const stateToChange = {}
@@ -32,11 +33,12 @@ export default class Login extends Component {
           JSON.stringify({
               username: this.state.username,
               password: this.state.password
-          })
+          }),
       )
   }
 
   render() {
+    console.log(`you're logged in as ${this.state.username}`)
       return (
           <form onSubmit={this.handleLogin}>
               <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
