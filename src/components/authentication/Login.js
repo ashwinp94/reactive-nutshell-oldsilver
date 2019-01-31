@@ -1,16 +1,14 @@
-//CONDITIONAL RENDERING:
-//--if condition is true, render one component. If not, render another
-
 import React, { Component } from "react"
 import "./Login.css"
 
 export default class Login extends Component {
 
     // Set initial state
-state = {
-    username: "",
-    password: ""
-}
+    state = {
+        username: "",
+        password: "",
+
+    }
 
 
 // Update state whenever an input field is edited
@@ -20,28 +18,31 @@ handleFieldChange = (evt) => {
     this.setState(stateToChange)
 }
 
-// Simplistic handler for login submit
-handleLogin = (e) => {
-    e.preventDefault()
-
-    /*
-        For now, just store the username and password that
-        the customer enters into local storage.
-    */
-    sessionStorage.setItem(
-        "credentials",
-        JSON.stringify({
-            username: this.state.username,
-            password: this.state.password
-        }),
-    )
-}
+    // Simplistic handler for login submit
+onLogin = (evt) => {
+    evt.preventDefault();
+    this.props.verifyUser(this.state.username, this.state.password)
+            if(this.props.users.length < 1) {
+                alert("We can't seem to find you! Try registering below")
+            } else {
+                // if(this.props.users.length < 1) {
+                this.props.users.forEach(user => {
+                    let loggedIn= false;
+                    if (this.state.username === user.username && this.state.password === user.password) {
+                            loggedIn= true;
+                        }
+                    if (loggedIn === true){
+                        sessionStorage.setItem("user", user.id);
+                        this.props.history.push("/news");
+                    }
+                })
+            }
+        }
 
 render() {
-    console.log(`you're logged in as ${this.state.username}`)
     return (
-        <form className="loginForm" onSubmit={this.handleLogin}>
-            <h1 className="h3 mb-3 font-weight-normal signIn">Please sign in</h1>
+        <form onSubmit={this.onLogin}>
+            <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
             <label htmlFor="inputUsername">
                 Username
             </label>
@@ -56,9 +57,14 @@ render() {
                     id="password"
                     placeholder="Password"
                     required="" />
-            <button className="signInButton" type="submit">
+            <button type="submit">
                 Sign in
             </button>
+            <button type="button"
+                        onClick={()=> this.props.history.push("/login/new")}
+                        className="btn btn-success">
+                    Register
+                </button>
         </form>
     )
 }
