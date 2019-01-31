@@ -1,4 +1,4 @@
-.loginForm{
+.logInForm{
   display:flex;
   justify-content:center;
   flex-direction: column;
@@ -25,9 +25,7 @@
 }
 .signInButton:hover{
   cursor:pointer;
-  transform: scale(1.1);
-  
-  
+  transform: scale(1);
 }
 .signInButton{
   background-color:#007bce;
@@ -35,8 +33,17 @@
   color:white;
   padding:8px;
   border:0;
-  border-radius:15px;
+  transition:all .5 s ;
+  margin-bottom:10px;
+}
+.registerButton{
+  margin-top:15px;
+  color:white;
+  padding:8px;
+  border:0;
   box-shadow:2px 2px 8px black;
-  
   transition:all .9s ;
+}
+.title{
+  text-align:center;
 }
