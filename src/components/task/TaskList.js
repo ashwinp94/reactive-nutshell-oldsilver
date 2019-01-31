@@ -1,15 +1,15 @@
 import React, { Component }  from 'react'
 import { Link } from 'react-router-dom'
+import "./Task.css"
 export default class TaskList extends Component{
 state = {
   complete: false
 }
-// Just seeing if the state is opposite 
+// Just seeing if the state is not its state from above
 handleFieldChange = () => {
   this.setState({
     complete: !this.state.complete
   })
-  // this.completeTask()
 }
 
 
@@ -29,9 +29,12 @@ handleFieldChange = () => {
         <section className="tasks">
         {
           this.props.tasks.map(task => 
-          <div key={task.id}>
+          <div className="taskCard" key={task.id}>
               <h2>
-                <input 
+                {task.task} 
+              </h2>
+              <p>{task.expectedCompletionDate}</p>
+              <p>Complete <input 
                 id = {task.id}
                 type = "checkbox"
                 // on click of checkbox - we are keeping the task value and the expected completion date but changes the default
@@ -48,10 +51,7 @@ handleFieldChange = () => {
                   .then(() => this.props.history.push("/tasks"))
                   }
                 }
-                />
-                {task.task} 
-              </h2>
-              <p>{task.expectedCompletionDate}</p>
+                /> </p>
               <Link className="nav-link" to={`/tasks/${task.id}/edit`}>Edit</Link>
             </div>
           )
