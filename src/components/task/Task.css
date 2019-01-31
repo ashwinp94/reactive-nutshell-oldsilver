@@ -13,6 +13,13 @@
   flex-wrap:wrap;
 }
 .taskCard{
-  padding:80px;
+  padding:60px;
   border:2px solid gray;
+  background-color:#707884;
+  color:white;
+  box-shadow:2px 2px 8px gray;
+  border-radius:15px;
+}
+.edit{
+  color:darkblue;
 }

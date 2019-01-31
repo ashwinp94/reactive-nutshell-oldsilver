@@ -52,7 +52,7 @@ handleFieldChange = () => {
                   }
                 }
                 /> </p>
-              <Link className="nav-link" to={`/tasks/${task.id}/edit`}>Edit</Link>
+              <Link className="nav-link edit" to={`/tasks/${task.id}/edit`}>Edit</Link>
             </div>
           )
         }

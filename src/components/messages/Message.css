@@ -18,6 +18,7 @@ padding:20px;
 border-radius:15px;
 border:1px solid gray;
 background-color:#007bce;
+box-shadow:2px 2px 8px gray;
 color:white;
 }
 .message{
