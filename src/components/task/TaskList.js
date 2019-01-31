@@ -4,7 +4,7 @@ export default class TaskList extends Component{
 state = {
   complete: false
 }
-
+// Just seeing if the state is opposite 
 handleFieldChange = () => {
   this.setState({
     complete: !this.state.complete
@@ -34,6 +34,8 @@ handleFieldChange = () => {
                 <input 
                 id = {task.id}
                 type = "checkbox"
+                // on click of checkbox - we are keeping the task value and the expected completion date but changes the default
+                //value of complete to true and removing the entrty from the DOM 
                 onClick={() => {
                   const completeTask = {
                     task: task.task,

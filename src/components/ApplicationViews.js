@@ -36,6 +36,8 @@ export default class ApplicationViews extends Component {
       })
     })
 
+    //onComponentDidMount we are filtering through the database and only showing tasks with the value of false
+    //all the true/ completed tasks remain in the database
     TaskManager.getAll()
     .then(allTasks => {
       let filteredTasks = allTasks.filter(task => {
