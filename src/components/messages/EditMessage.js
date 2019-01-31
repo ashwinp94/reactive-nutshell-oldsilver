@@ -27,7 +27,7 @@ export default class EditMessage extends Component {
         userId: this.state.userId,
         id: this.state.id
       }
-
+console.log(this.props.match.params.messageId, existingMessage)
       this.props.updateMessage(this.props.match.params.messageId, existingMessage)
       .then(() => this.props.history.push("/messages"))
     }
@@ -54,7 +54,7 @@ export default class EditMessage extends Component {
                     className="form-control"
                     onChange={this.handleFieldChange}
                     id="message"
-                    value={this.state.MessageName} />
+                    value={this.state.message} />
             </div>
             <button type="submit" onClick={this.updateExistingMessage} className="btn btn-primary">Update</button>
           </form>

@@ -44,7 +44,7 @@ export default class MessageList extends React.Component {
                         return (
 
                             <p key={message.id}>
-                                <p className="messageClass">{message.message}</p>
+                                <p>{message.message}</p>
                                 
                                 <Link className="nav-link" to={`/messages/${message.id}/edit`}>Edit</Link>
                             </p>
