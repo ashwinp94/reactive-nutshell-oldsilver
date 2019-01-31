@@ -48,12 +48,9 @@ handleFieldChange = () => {
                 }
                 />
                 {task.task} 
-                <p>{task.expectedCompletionDate}</p>
-
               </h2>
-              <Link 
-                className="nav-link" 
-                to={`/tasks/${task.id}/edit`}>Edit</Link>
+              <p>{task.expectedCompletionDate}</p>
+              <Link className="nav-link" to={`/tasks/${task.id}/edit`}>Edit</Link>
             </div>
           )
         }

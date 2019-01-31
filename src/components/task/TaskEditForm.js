@@ -5,7 +5,7 @@ export default class TaskForm extends Component{
   state = {
     taskName:"",
     date:"",
-    complete:"",
+    complete:false,
     userId: 1
   }
 

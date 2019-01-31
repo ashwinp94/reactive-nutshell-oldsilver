@@ -36,11 +36,16 @@ export default class ApplicationViews extends Component {
       })
     })
 
-    TaskManager.getAll().then(allTasks => {
+    TaskManager.getAll()
+    .then(allTasks => {
+      let filteredTasks = allTasks.filter(task => {
+        return task.complete === false
+      })
       this.setState({
-        tasks:allTasks
+        tasks:filteredTasks
         })
       })
+
 
       NewsManager.getYourNews(this.state.userId).then(allNews => {
         this.setState({
@@ -69,19 +74,26 @@ export default class ApplicationViews extends Component {
 
   addTask = (task) => TaskManager.postNewTask(task)
   .then(() => TaskManager.getAll())
-  .then(task => this.setState({
-      tasks: task
+  .then(allTasks => {
+    let filteredTasks = allTasks.filter(task => {
+      return task.complete === false
     })
-  )
+    this.setState({
+      tasks:filteredTasks
+      })
+    })
 
   updateTasksList = (taskId, existingObj) => {
     return TaskManager.getAllNonCompletedTasks(taskId, existingObj)
     .then(() => TaskManager.getAll())
-    .then(task => {
-      this.setState({
-        tasks:task
+    .then(allTasks => {
+      let filteredTasks = allTasks.filter(task => {
+        return task.complete === false
       })
-    })
+      this.setState({
+        tasks:filteredTasks
+        })
+      })
   }
 
   addNews = Newnews =>
