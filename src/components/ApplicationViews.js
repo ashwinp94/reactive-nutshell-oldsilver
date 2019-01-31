@@ -17,7 +17,7 @@ import EventEdit from "./events/EventEdit"
 import LoginManager from "../modules/LoginManager";
 import LoginForm from "./authentication/LoginForm"
 import EditMessage from "./messages/EditMessage"
-import Login from "./authentication/login"
+import Login from "./authentication/Login"
 export default class ApplicationViews extends Component {
   // Check if credentials are in local storage
   isAuthenticated = () => sessionStorage.getItem("credentials") !== null
