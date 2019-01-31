@@ -1,15 +1,13 @@
 import React, { Component } from "react"
 
 
-export default class NewsForm extends Component {
+export default class LoginForm extends Component {
     // Set initial state
 
     state = {
-        userId: sessionStorage.getItem("user"),
-        url: [],
-        title: [],
-        synopsis: [],
-        newsDate: []
+      username: "",
+      password: "",
+
     }
 
     // this.constructNewAnimal = this.constructNewAnimal.bind(this)
@@ -26,50 +24,39 @@ export default class NewsForm extends Component {
         Local method for validation, creating animal object, and
         invoking the function reference passed from parent component
      */
-    constructNewNews = evt => {
+    constructNewUser = evt => {
         evt.preventDefault()
-            const News = {
-                userId: sessionStorage.getItem("user"),
-                url: this.state.url,
-                title: this.state.title,
-                synopsis: this.state.synopsis,
-                newsDate: new Date()
+            const User = {
+                username: this.state.username,
+                password: this.state.password,
+
             };
 
             // Create the animal and redirect user to animal list
-            this.props.addNews(News)
-            .then(() => this.props.history.push("/news"));
+            this.props.addUser(User)
+            .then(() => this.props.history.push("/login"));
         }
 
     render() {
         return (
             <React.Fragment>
-                <form className="NewsForm">
+                <form className="LoginForm">
                     <div className="form-group">
-                        <label htmlFor="url">Add Link: </label>
+                        <label htmlFor="username">Username: </label>
                         <input type="text" required
                                className="form-control"
                                onChange={this.handleFieldChange}
-                               id="url"
-                               placeholder="url link" />
+                               id="username"
+                               placeholder="username" />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="title">News Title</label>
-                        <input type="text" required
+                        <label htmlFor="password">Password</label>
+                        <input type="password" required
                                className="form-control"
                                onChange={this.handleFieldChange}
-                               id="title"
-                               placeholder="news title" />
+                               id="password"
+                               placeholder="Password" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="synopsis">Synopsis</label>
-                        <input type="text" required
-                               className="form-control"
-                               onChange={this.handleFieldChange}
-                               id="synopsis"
-                               placeholder="synopsis" />
-                    </div>
-
                     {/* <div className="form-group">
                         <label htmlFor="employee">Assign to caretaker</label>
                         <select
@@ -83,7 +70,7 @@ export default class NewsForm extends Component {
                         }
                         </select>
                     </div> */}
-                    <button type="submit" onClick={this.constructNewNews} className="btn btn-primary">Submit</button>
+                    <button type="submit" onClick={this.constructNewUser} className="btn btn-primary">Submit</button>
                 </form>
             </React.Fragment>
         )
