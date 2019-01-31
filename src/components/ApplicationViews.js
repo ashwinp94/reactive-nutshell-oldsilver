@@ -15,6 +15,7 @@ import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
 import EditMessage from "./messages/EditMessage"
+import FriendsForm from "./friends/FriendsForm"
 export default class ApplicationViews extends Component {
     state = {
       newsitems: [],
@@ -186,6 +187,12 @@ export default class ApplicationViews extends Component {
           <Route
             path="/friends" render={props => {
               return null
+              // Remove null and return the component which will show list of friends
+            }}
+          />
+          <Route
+            path="/friends" render={props => {
+              return <FriendsForm {...props} addMessage={this.addMessage} />
               // Remove null and return the component which will show list of friends
             }}
           />
