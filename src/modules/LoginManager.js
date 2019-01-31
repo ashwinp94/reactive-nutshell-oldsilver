@@ -7,6 +7,10 @@ export default {
   getAll() {
     return fetch(`${remoteURL}/users`).then(e => e.json());
   },
+  getUsernameAndPassword(username, password){
+    return fetch(`${remoteURL}/users?username=${username}&password=${password}`)
+    .then(response => response.json())
+},
   post(newUser) {
     return fetch(`${remoteURL}/users`, {
       method: "POST",

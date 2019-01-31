@@ -7,7 +7,6 @@ export default class NewsForm extends Component {
     state = {
       username: "",
       password: "",
-      id: "",
 
     }
 
@@ -28,7 +27,6 @@ export default class NewsForm extends Component {
     constructNewUser = evt => {
         evt.preventDefault()
             const User = {
-                id: this.state.id,
                 username: this.state.username,
                 password: this.state.password,
 

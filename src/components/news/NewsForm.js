@@ -5,7 +5,6 @@ export default class NewsForm extends Component {
     // Set initial state
 
     state = {
-        userId: 1,
         url: [],
         title: [],
         synopsis: [],
@@ -29,7 +28,6 @@ export default class NewsForm extends Component {
     constructNewNews = evt => {
         evt.preventDefault()
             const News = {
-                userId: sessionStorage.getItem("credentials"),
                 url: this.state.url,
                 title: this.state.title,
                 synopsis: this.state.synopsis,

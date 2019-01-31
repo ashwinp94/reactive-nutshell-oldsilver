@@ -21,13 +21,15 @@ import LoginForm from "./authentication/LoginForm"
 
 export default class ApplicationViews extends Component {
   state = {
+    users: [],
     newsitems: [],
     events: [],
     tasks:[],
     messages:[],
-    userId: sessionStorage.getItem("credentials")
+    userId: sessionStorage.getItem("user")
   };
-  isAuthenticated = () => sessionStorage.getItem("credentials") !== null
+
+  isAuthenticated = () => sessionStorage.getItem("user") !== null
 
   componentDidMount() {
     EventManager.getAll().then(events => {
@@ -42,13 +44,7 @@ export default class ApplicationViews extends Component {
         })
       })
 
-      LoginManager.get("userId").then(oneUser => {
-        this.setState({
-          userId: oneUser
-          })
-        })
-
-      NewsManager.getYourNews(this.state.userId).then(allNews => {
+      NewsManager.getAll().then(allNews => {
         this.setState({
           newsitems: allNews
         });
@@ -60,19 +56,20 @@ export default class ApplicationViews extends Component {
       });
     }
 
+
     deleteMessage = id => {
       return fetch(`http://localhost:5002/messages/${id}`, {
         method: "DELETE"
       })
-        .then(e => e.json())
-        .then(() => fetch(`http://localhost:5002/messages`))
-        .then(e => e.json())
-        .then(messages => this.setState({
-          messages: messages
-        })
+      .then(e => e.json())
+      .then(() => fetch(`http://localhost:5002/messages`))
+      .then(e => e.json())
+      .then(messages => this.setState({
+        messages: messages
+      })
         )
-    }
-    addMessage = newMessage => MessageManager.post(newMessage)
+      }
+      addMessage = newMessage => MessageManager.post(newMessage)
       .then(() => MessageManager.getAll())
       .then(message => this.setState({
         messages: message
@@ -80,35 +77,35 @@ export default class ApplicationViews extends Component {
       )
 
   addEvent = (event) => EventManager.post(event)
-    .then(() => EventManager.getAll())
-    .then(events => this.setState({
-      events: events
+  .then(() => EventManager.getAll())
+  .then(events => this.setState({
+    events: events
+  })
+  )
+  addNews = Newnews =>
+  NewsManager.post(Newnews)
+  .then(() => NewsManager.getAll())
+  .then(news =>
+    this.setState({
+      newsitems: news
     })
-    )
-    addNews = Newnews =>
-    NewsManager.post(Newnews)
-        .then(() => NewsManager.getAll())
-        .then(news =>
-          this.setState({
-            newsitems: news
-          })
-        );
+    );
 
     addTask = (task) => TaskManager.postNewTask(task)
-      .then(() => TaskManager.getAll())
-      .then(task => this.setState({
-          tasks: task
-        })
-      )
+    .then(() => TaskManager.getAll())
+    .then(task => this.setState({
+      tasks: task
+    })
+    )
     deleteTask = (id) => {
-        return TaskManager.deleteTask(id)
-        .then(task => this.setState({
-          tasks: task
-        }))
-      }
+      return TaskManager.deleteTask(id)
+      .then(task => this.setState({
+        tasks: task
+      }))
+    }
 
     editTask = (taskId, existingObj) => {
-        return TaskManager.editTask(taskId, existingObj)
+      return TaskManager.editTask(taskId, existingObj)
         .then(() => TaskManager.getAll())
         .then(tasks => {
           this.setState({
@@ -117,7 +114,7 @@ export default class ApplicationViews extends Component {
         })
       }
 
-    updateEvent = (eventId, editedEventObj) => {
+      updateEvent = (eventId, editedEventObj) => {
       return EventManager.put(eventId, editedEventObj)
       .then(() => EventManager.getAll())
       .then(events => {
@@ -130,49 +127,53 @@ export default class ApplicationViews extends Component {
       return fetch(`http://localhost:5002/newsitems/${id}`, {
         method: "DELETE"
       })
-        .then(response => response.json())
-        .then(() => fetch(`http://localhost:5002/newsitems`))
-        .then(response => response.json())
-        .then(news =>
+      .then(response => response.json())
+      .then(() => fetch(`http://localhost:5002/newsitems`))
+      .then(response => response.json())
+      .then(news =>
           this.setState({
             newsitems: news
           })
-        );
-    };
-    addUser = newUser =>
-      LoginManager.post(newUser)
+          );
+        };
+        addUser = newUser =>
+        LoginManager.post(newUser)
         .then(() => LoginManager.getAll())
         .then(user =>
           this.setState({
-            userId: user
+            users: user
           })
-        );
+          );
 
-    addNews = Newnews =>
-      NewsManager.post(Newnews)
-        .then(() => NewsManager.getAll())
-        .then(news =>
-          this.setState({
-            newsitems: news
-          })
-        );
-
-    addMessage = (message) => MessageManager.post(message)
+          addMessage = (message) => MessageManager.post(message)
           .then(() => MessageManager.getAll())
           .then(messages => this.setState({
-              messages: messages
+            messages: messages
           })
           )
+          verifyUser = (username, password) => {
+              LoginManager.getUsernameAndPassword(username, password)
+              .then(allUsers => this.setState({
+                    users: allUsers}))
+          }
 
     render() {
       return (
-        <React.Fragment>
-           <Route path="/login" component={Login} />
+
+          <React.Fragment>
+           <Route path="/login"  render={(props) => {
+
+             return <Login {...props} component={Login}
+
+             verifyUser={this.verifyUser}
+             users={this.state.users}/>
+            }} />
 
            <Route exact path="/login/new" render={(props) => {
              return <LoginForm {...props}
-                                          userId={this.state.userId}
-                                         addUser ={this.addUser} />
+                                          users={this.state.users}
+                                         addUser ={this.addUser}
+                                         userId={this.state.userId}/>
                                         }} />
            <Route exact path="/" render={(props) => {
           }} />
@@ -183,6 +184,7 @@ export default class ApplicationViews extends Component {
                 return <NewsList {...props}
                   newsitems={this.state.newsitems}
                   deleteNews={this.deleteNews}
+                  userId={this.state.userId}
                   />
             } else {
               return <Redirect to="/login" />
@@ -192,7 +194,9 @@ export default class ApplicationViews extends Component {
           <Route path="/news/new" render={(props) => {
             return <NewsForm {...props}
             addNews={this.addNews}
-            userId={this.state.userId}/>
+            newsitems={this.state.newsitems}
+            userId={this.state.userId}
+            />
                   }} />
 
 
