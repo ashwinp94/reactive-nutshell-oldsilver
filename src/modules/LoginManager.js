@@ -11,6 +11,7 @@ export default {
     return fetch(`${remoteURL}/users?username=${username}&password=${password}`)
     .then(response => response.json())
 },
+
   post(newUser) {
     return fetch(`${remoteURL}/users`, {
       method: "POST",

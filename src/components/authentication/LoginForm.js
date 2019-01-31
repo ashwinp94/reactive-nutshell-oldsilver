@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 
-export default class NewsForm extends Component {
+export default class LoginForm extends Component {
     // Set initial state
 
     state = {
