@@ -6,3 +6,6 @@
         overflow: hidden;
         overflow: auto;
 }
+.messageClass {
+    border-width: 500px black;
+}

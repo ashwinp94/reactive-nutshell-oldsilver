@@ -24,6 +24,17 @@ export default class MessageList extends React.Component {
         }
     }
 
+    // userConditional= (userId) => {
+    //     if (this.props.message.userId === 1) {
+    //         let style = "current_user";
+    //         return style;
+    //     }
+    //     else {
+    //         let style = "other_user"
+    //         return style;
+    //     }
+    // }
+
 
     render() {
         return (
@@ -33,8 +44,8 @@ export default class MessageList extends React.Component {
                         return (
 
                             <p key={message.id}>
-                                {message.userId}
-                                {message.message}
+                                <p className="messageClass">{message.message}</p>
+                                
                                 <Link className="nav-link" to={`/messages/${message.id}/edit`}>Edit</Link>
                             </p>
                         )
