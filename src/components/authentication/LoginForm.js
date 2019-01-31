@@ -51,7 +51,7 @@ export default class NewsForm extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="text" required
+                        <input type="password" required
                                className="form-control"
                                onChange={this.handleFieldChange}
                                id="password"

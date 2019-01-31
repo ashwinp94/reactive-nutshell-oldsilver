@@ -1,6 +1,18 @@
 import React, { Component }  from 'react'
 import { Link } from 'react-router-dom'
+import "./Task.css"
 export default class TaskList extends Component{
+state = {
+  complete: false
+}
+// Just seeing if the state is not its state from above
+handleFieldChange = () => {
+  this.setState({
+    complete: !this.state.complete
+  })
+}
+
+
   render(){
     return(
       <>
@@ -17,19 +29,30 @@ export default class TaskList extends Component{
         <section className="tasks">
         {
           this.props.tasks.map(task => 
-            <div key={task.id}>
+          <div className="taskCard" key={task.id}>
               <h2>
                 {task.task} 
-                <p>{task.expectedCompletionDate}</p>
-              </h2> 
-              <Link 
-              className="nav-link" 
-              to={`/tasks/${task.id}/edit`}>Edit</Link>
-
-              <a href="#"
-                  onClick={() => this.props.deleteTask(task.id)
-                  .then(() => this.props.history.push("/tasks"))}
-                  className="card-link">Delete</a>
+              </h2>
+              <p>{task.expectedCompletionDate}</p>
+              <p>Complete <input 
+                id = {task.id}
+                type = "checkbox"
+                // on click of checkbox - we are keeping the task value and the expected completion date but changes the default
+                //value of complete to true and removing the entrty from the DOM 
+                onClick={() => {
+                  const completeTask = {
+                    task: task.task,
+                    expectedCompletionDate: task.expectedCompletionDate,
+                    complete: !this.state.complete,
+                    userId: 1
+                  }
+                  console.log(completeTask)
+                  this.props.updateTasksList(task.id , completeTask)
+                  .then(() => this.props.history.push("/tasks"))
+                  }
+                }
+                /> </p>
+              <Link className="nav-link" to={`/tasks/${task.id}/edit`}>Edit</Link>
             </div>
           )
         }
