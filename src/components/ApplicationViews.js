@@ -237,37 +237,6 @@ export default class ApplicationViews extends Component {
           }
         }} />
 
-        {/*BEGIN TASKS ROUTING*/}
-        <Route exact path="/tasks" render={(props) => {
-          if (this.isAuthenticated()) {
-            return <TaskList {...props}
-              tasks={this.state.tasks}
-              deleteTask={this.deleteTask} />
-          } else {
-            return <Redirect to="/login" />
-          }
-        }} />
-
-        <Route
-          path="/tasks/new" render={(props) => {
-            if (this.isAuthenticated()) {
-              return <TaskForm {...props}
-                addTask={this.addTask}
-                tasks={this.state.tasks} />
-            } else {
-              return <Redirect to="/login" />
-            }
-          }} />
-
-        <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
-          if (this.isAuthenticated()) {
-            return <TaskEditForm {...props}
-              editTask={this.editTask} />
-          } else {
-            return <Redirect to="/login" />
-          }
-        })} />
-
         {/*BEGIN EVENT ROUTING*/}
         <Route exact path="/events" render={(props) => {
           if (this.isAuthenticated()) {
