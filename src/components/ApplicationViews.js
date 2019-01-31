@@ -50,7 +50,7 @@ export default class ApplicationViews extends Component {
         });
       });
     }
-    
+
     //MESSAGES
     deleteMessage = id => {
       return fetch(`http://localhost:5002/messages/${id}`, {
@@ -162,17 +162,23 @@ export default class ApplicationViews extends Component {
           }} />
 
           <Route path="/news/new" render={(props) => {
-            return <NewsForm {...props}
-            addNews={this.addNews}/>
-                  }} />
+            if (this.isAuthenticated()) {
+              return <NewsForm {...props}
+                addNews={this.addNews}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+          }} />
 
            {/*BEGIN FRIENDS ROUTING*/}
-          <Route
-            path="/friends" render={props => {
+          <Route path="/friends" render={props => {
+             if (this.isAuthenticated()) {
               return null
               // Remove null and return the component which will show list of friends
-            }}
-          />
+             } else {
+               return <Redirect to="/login" />
+             }
+          }} />
 
            {/*BEGIN MESSAGES ROUTING*/}
           <Route exact path="/messages" render={props => {
@@ -204,34 +210,49 @@ export default class ApplicationViews extends Component {
 
           <Route 
             path="/tasks/new" render={(props) => {
-              return <TaskForm {...props}
-                addTask={this.addTask}
-                tasks={this.state.tasks}
-                />
-                }} />
+              if (this.isAuthenticated()) {
+                return <TaskForm {...props}
+                  addTask={this.addTask}
+                  tasks={this.state.tasks} />
+              } else {
+                return <Redirect to="/login" />
+              }
+          }} />
 
           <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
+            if (this.isAuthenticated()) {
               return <TaskEditForm {...props}
-              editTask = {this.editTask}/>
-            })} />
+                editTask = {this.editTask}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+          })} />
 
           {/*BEGIN EVENT ROUTING*/}
           <Route exact path="/events" render={(props) => {
             if (this.isAuthenticated()) {
               return <EventList {...props}
-                                events={this.state.events} />
+                events={this.state.events} />
             } else {
               return <Redirect to="/login" />
             }
           }} />
 
           <Route path="/events/new" render={(props) => {
-            return <EventForm {...props}
-              addEvent={this.addEvent} />
+            if (this.isAuthenticated()) {
+              return <EventForm {...props}
+                addEvent={this.addEvent} />
+            } else {
+              return <Redirect to="/login" />
+            }
           }} />
 
           <Route path="/events/:eventId(\d+)/edit" render={props => {
-            return <EventEdit {...props} updateEvent={this.updateEvent}/>
+            if (this.isAuthenticated()) {
+              return <EventEdit {...props} updateEvent={this.updateEvent}/>
+            } else {
+              return <Redirect to="/login" />
+            }
           }} />
         </React.Fragment>
       )
