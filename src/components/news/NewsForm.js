@@ -29,7 +29,7 @@ export default class NewsForm extends Component {
     constructNewNews = evt => {
         evt.preventDefault()
             const News = {
-                userId: 1,
+                userId: sessionStorage.getItem("credentials"),
                 url: this.state.url,
                 title: this.state.title,
                 synopsis: this.state.synopsis,

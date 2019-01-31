@@ -25,7 +25,7 @@ export default class ApplicationViews extends Component {
     events: [],
     tasks:[],
     messages:[],
-    userId: []
+    userId: sessionStorage.getItem("credentials")
   };
   isAuthenticated = () => sessionStorage.getItem("credentials") !== null
 
@@ -42,7 +42,7 @@ export default class ApplicationViews extends Component {
         })
       })
 
-      LoginManager.get("credentials").then(oneUser => {
+      LoginManager.get("userId").then(oneUser => {
         this.setState({
           userId: oneUser
           })
@@ -175,14 +175,6 @@ export default class ApplicationViews extends Component {
                                          addUser ={this.addUser} />
                                         }} />
            <Route exact path="/" render={(props) => {
-
-            if (this.isAuthenticated()) {
-              return <NewsList {...props}
-                newsitems={this.state.newsitems}
-                deleteNews={this.deleteNews} />
-            } else {
-              return <Redirect to="/login" />
-            }
           }} />
 
            {/*BEGIN NEWS ROUTING*/}
@@ -190,7 +182,8 @@ export default class ApplicationViews extends Component {
             if (this.isAuthenticated()) {
                 return <NewsList {...props}
                   newsitems={this.state.newsitems}
-                  deleteNews={this.deleteNews} />
+                  deleteNews={this.deleteNews}
+                  />
             } else {
               return <Redirect to="/login" />
             }
@@ -198,7 +191,8 @@ export default class ApplicationViews extends Component {
 
           <Route path="/news/new" render={(props) => {
             return <NewsForm {...props}
-            addNews={this.addNews}/>
+            addNews={this.addNews}
+            userId={this.state.userId}/>
                   }} />
 
 

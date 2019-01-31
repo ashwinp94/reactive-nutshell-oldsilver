@@ -31,9 +31,15 @@ export default class Login extends Component {
           JSON.stringify({
               username: this.state.username,
               password: this.state.password,
-              id: this.state.id
+
           })
       )
+      sessionStorage.setItem(
+        "userId",
+        JSON.stringify({
+            id: this.state.id
+        })
+    )
   }
 
   render() {
@@ -60,7 +66,7 @@ export default class Login extends Component {
               <button type="button"
                             onClick={()=> this.props.history.push("/login/new")}
                             className="btn btn-success">
-                        Register
+                        New Article
                     </button>
           </form>
       )

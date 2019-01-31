@@ -36,7 +36,7 @@ export default class NewsForm extends Component {
 
             // Create the animal and redirect user to animal list
             this.props.addUser(User)
-            .then(() => this.props.history.push("/news"));
+            .then(() => this.props.history.push("/login"));
         }
 
     render() {

@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 
 export default class NewsList extends Component {
-    state = {
-        currentUserId: 1,
-    }
+
     render() {
         const sortedNewsItems =
               [].concat(this.props.newsitems)
