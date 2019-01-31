@@ -201,8 +201,7 @@ export default class ApplicationViews extends Component {
                   addUser={this.addUser}
                   userId={this.state.userId} />
               }} />
-              <Route exact path="/" render={(props) => {
-              }} />
+
 
               {/*BEGIN NEWS ROUTING*/}
               <Route exact path="/news" render={(props) => {
