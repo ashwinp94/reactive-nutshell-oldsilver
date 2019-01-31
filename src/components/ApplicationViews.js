@@ -228,6 +228,14 @@ export default class ApplicationViews extends Component {
                 return <Redirect to="/login" />
               }
           }} />
+            <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
+            if (this.isAuthenticated()) {
+              return <TaskEditForm {...props}
+                editTask = {this.editTask}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+          })} />
 
         <Route exact path="/messages/:messageId(\d+)/edit" render={props => {
           if (this.isAuthenticated()) {

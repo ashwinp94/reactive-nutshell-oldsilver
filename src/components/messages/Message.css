@@ -1,11 +1,33 @@
 .scroll {
-        box-sizing: content-box;
-        height: 250px;
-        border: 2px black;
-        overflow:  scroll; 
-        overflow: hidden;
-        overflow: auto;
+    box-sizing: content-box;
+    height: 75vh;
+    border: 2px black;
+    overflow:  scroll; 
+    overflow: hidden;
+    overflow: auto;
 }
-.messageClass {
-    border-width: 500px black;
+.messages {
+width:50%;
+margin:0 auto;
+margin-top:30px;
+
+}
+.messageBox{
+/* width:25%; */
+padding:20px;
+border-radius:15px;
+border:1px solid gray;
+background-color:#007bce;
+color:white;
+}
+.message{
+width:50%;
+margin:0 auto;
+background-color:#707884;
+border-radius:15px;
+padding-left:10px;
+padding-right:10px;
+}
+#sendButton{
+margin-bottom:5px;
 }

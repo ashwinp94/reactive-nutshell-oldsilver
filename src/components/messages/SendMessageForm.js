@@ -52,6 +52,7 @@ export default class SendMessageForm extends Component {
             />
           </div>
           <button
+          id="sendButton"
             type="submit"
             onClick={this.constructNewMessage}
             className="btn btn-primary"

@@ -42,12 +42,13 @@ export default class MessageList extends React.Component {
                 <div className="scroll" ref={`chatBox`}>
                     {this.props.messages.map(message => {
                         return (
-
+                        <div className="messages">
                             <p key={message.id}>
-                                <p>{message.message}</p>
+                                <p className="messageBox">{message.message}</p>
                                 
                                 <Link className="nav-link" to={`/messages/${message.id}/edit`}>Edit</Link>
                             </p>
+                        </div>
                         )
                     })}
                     <div ref={this.myRef}></div>
