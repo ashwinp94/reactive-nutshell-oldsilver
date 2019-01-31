@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
 import TaskForm from './task/TaskForm'
@@ -13,28 +13,31 @@ import NewsForm from "./news/NewsForm";
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
-import EventEdit from "./events/EventEdit"
-
+import EventEdit from "./events/EventEdit";
+import Login from "./authentication/Login"
 export default class ApplicationViews extends Component {
-  state = {
-    newsitems: [],
-    events: [],
-    tasks:[],
-    messages:[],
-    userId: 1
-  };
-  componentDidMount() {
-    EventManager.getAll().then(events => {
-      this.setState({
-        events: events
-      })
-    })
+   // Check if credentials are in local storage
+  isAuthenticated = () => sessionStorage.getItem("credentials") !== null
+    
+    state = {
+      newsitems: [],
+      events: [],
+      tasks:[],
+      messages:[]
+    };
 
-    TaskManager.getAll().then(allTasks => {
-      this.setState({
-        tasks:allTasks
+    componentDidMount() {
+      EventManager.getAll().then(events => {
+        this.setState({
+          events: events
         })
       })
+
+      TaskManager.getAll().then(allTasks => {
+        this.setState({
+          tasks:allTasks
+          })
+        })
 
       NewsManager.getYourNews(this.state.userId).then(allNews => {
         this.setState({
@@ -48,6 +51,7 @@ export default class ApplicationViews extends Component {
       });
     }
 
+    //MESSAGES
     deleteMessage = id => {
       return fetch(`http://localhost:5002/messages/${id}`, {
         method: "DELETE"
@@ -66,22 +70,25 @@ export default class ApplicationViews extends Component {
         messages: message
       })
       )
-
-  addEvent = (event) => EventManager.post(event)
+    
+    //EVENTS
+    addEvent = (event) => EventManager.post(event)
     .then(() => EventManager.getAll())
     .then(events => this.setState({
-      events: events
-    })
-    )
-    addNews = Newnews =>
-    NewsManager.post(Newnews)
-        .then(() => NewsManager.getAll())
-        .then(news =>
-          this.setState({
-            newsitems: news
-          })
-        );
+          events:events
+        })
+      )
+    updateEvent = (eventId, editedEventObj) => {
+      return EventManager.put(eventId, editedEventObj)
+      .then(() => EventManager.getAll())
+      .then(events => {
+        this.setState({
+          events: events
+        })
+      })
+    }
 
+    //TASKS
     addTask = (task) => TaskManager.postNewTask(task)
       .then(() => TaskManager.getAll())
       .then(task => this.setState({
@@ -94,7 +101,6 @@ export default class ApplicationViews extends Component {
           tasks: task
         }))
       }
-
     editTask = (taskId, existingObj) => {
         return TaskManager.editTask(taskId, existingObj)
         .then(() => TaskManager.getAll())
@@ -104,18 +110,8 @@ export default class ApplicationViews extends Component {
           })
         })
       }
-
-
-
-    updateEvent = (eventId, editedEventObj) => {
-      return EventManager.put(eventId, editedEventObj)
-      .then(() => EventManager.getAll())
-      .then(events => {
-        this.setState({
-          events: events
-        })
-      })
-    }
+    
+    //NEWS
     deleteNews = id => {
       return fetch(`http://localhost:5002/newsitems/${id}`, {
         method: "DELETE"
@@ -129,7 +125,6 @@ export default class ApplicationViews extends Component {
           })
         );
     };
-
     addNews = Newnews =>
       NewsManager.post(Newnews)
         .then(() => NewsManager.getAll())
@@ -139,85 +134,125 @@ export default class ApplicationViews extends Component {
           })
         );
 
-    addMessage = (message) => MessageManager.post(message)
-          .then(() => MessageManager.getAll())
-          .then(messages => this.setState({
-              messages: messages
-          })
-          )
-
     render() {
       return (
         <React.Fragment>
+          <Route path="/login" component={Login} />
+
+          {/*landing page will be either login or news depending on credentials*/}
+          <Route exact path="/" render={(props) => {
+            if (this.isAuthenticated()) {
+              return <NewsList {...props}  
+                newsitems={this.state.newsitems}              
+                deleteNews={this.deleteNews} />
+            } else {
+              return <Redirect to="/login" />
+            }
+          }} />
+
+           {/*BEGIN NEWS ROUTING*/}
           <Route exact path="/news" render={(props) => {
-            return <NewsList {...props}
-              newsitems={this.state.newsitems}
-              deleteNews={this.deleteNews}/>
-          }}/>
+            if (this.isAuthenticated()) {
+                return <NewsList {...props}  
+                  newsitems={this.state.newsitems}              
+                  deleteNews={this.deleteNews} />
+            } else {
+              return <Redirect to="/login" />
+            }
+          }} />
 
           <Route path="/news/new" render={(props) => {
-            return <NewsForm {...props}
-            addNews={this.addNews}/>
-                  }} />
+            if (this.isAuthenticated()) {
+              return <NewsForm {...props}
+                addNews={this.addNews}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+          }} />
 
-          <Route
-            path="/friends" render={props => {
+           {/*BEGIN FRIENDS ROUTING*/}
+          <Route path="/friends" render={props => {
+             if (this.isAuthenticated()) {
               return null
               // Remove null and return the component which will show list of friends
-            }}
-          />
+             } else {
+               return <Redirect to="/login" />
+             }
+          }} />
 
-          <Route
-            path="/messages" render={props => {
-              return <MessageList {...props} messages={this.state.messages} />
-              // Remove null and return the component which will show the messages
-            }}
-          />
-          <Route
-            path="/messages" render={props => {
-              return <SendMessageForm {...props} addMessage={this.addMessage} />
-              // Remove null and return the component which will show the messages
-            }}
-          />
+           {/*BEGIN MESSAGES ROUTING*/}
+          <Route exact path="/messages" render={props => {
+              if (this.isAuthenticated()) {
+                return <MessageList {...props} messages={this.state.messages} />
+              } else {
+                return <Redirect to="/login" />
+              }
+          }} />
 
+          <Route exact path="/messages" render={props => {
+              if (this.isAuthenticated()) {
+                return <SendMessageForm {...props} addMessage={this.addMessage} />
+              } else {
+                return <Redirect to="/login" />
+              }
+          }} />
+
+           {/*BEGIN TASKS ROUTING*/}
           <Route exact path="/tasks" render={(props) => {
-            return <TaskList {...props}
-            tasks={this.state.tasks}
-            deleteTask={this.deleteTask} />
-        }} />
-          <Route
+              if (this.isAuthenticated()) {
+                return <TaskList {...props}
+                                 tasks={this.state.tasks} 
+                                 deleteTask={this.deleteTask} />
+              } else {
+                return <Redirect to="/login" />
+              }
+          }} />
+
+          <Route 
             path="/tasks/new" render={(props) => {
-              return <TaskForm {...props}
-                addTask={this.addTask}
-                tasks={this.state.tasks}
-                />
-                }} />
+              if (this.isAuthenticated()) {
+                return <TaskForm {...props}
+                  addTask={this.addTask}
+                  tasks={this.state.tasks} />
+              } else {
+                return <Redirect to="/login" />
+              }
+          }} />
 
           <Route exact path='/tasks/:taskId(\d+)/edit' render={(props => {
+            if (this.isAuthenticated()) {
               return <TaskEditForm {...props}
-              editTask = {this.editTask}/>
-            })} />
-
-          <Route
-            path="/tasks" render={props => {
-              return null
-              // Remove null and return the component which will show the user's tasks
-            }}
-          />
+                editTask = {this.editTask}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+          })} />
 
           {/*BEGIN EVENT ROUTING*/}
           <Route exact path="/events" render={(props) => {
-            return <EventList {...props}
-              events={this.state.events} />
+            if (this.isAuthenticated()) {
+              return <EventList {...props}
+                events={this.state.events} />
+            } else {
+              return <Redirect to="/login" />
+            }
           }} />
-          {/*addEvent route*/}
+
           <Route path="/events/new" render={(props) => {
-            return <EventForm {...props}
-              addEvent={this.addEvent} />
+            if (this.isAuthenticated()) {
+              return <EventForm {...props}
+                addEvent={this.addEvent} />
+            } else {
+              return <Redirect to="/login" />
+            }
           }} />
-          {/*updateEvent route*/}
+
           <Route path="/events/:eventId(\d+)/edit" render={props => {
-            return <EventEdit {...props} updateEvent={this.updateEvent}/>
+            if (this.isAuthenticated()) {
+              return <EventEdit {...props} updateEvent={this.updateEvent}/>
+            } else {
+              return <Redirect to="/login" />
+            }
           }} />
         </React.Fragment>
       )
