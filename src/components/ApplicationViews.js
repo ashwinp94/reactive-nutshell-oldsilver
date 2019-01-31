@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
 import TaskForm from './task/TaskForm'
@@ -15,6 +15,8 @@ import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
 import EventEdit from "./events/EventEdit"
 import Login from "./authentication/Login"
+import LoginManager from "../modules/LoginManager";
+import LoginForm from "./authentication/LoginForm"
 
 
 export default class ApplicationViews extends Component {
@@ -23,7 +25,7 @@ export default class ApplicationViews extends Component {
     events: [],
     tasks:[],
     messages:[],
-    userId: 1
+    userId: []
   };
   isAuthenticated = () => sessionStorage.getItem("credentials") !== null
 
@@ -39,6 +41,12 @@ export default class ApplicationViews extends Component {
         tasks:allTasks
         })
       })
+
+      LoginManager.get("credentials").then(oneUser => {
+        this.setState({
+          userId: oneUser
+          })
+        })
 
       NewsManager.getYourNews(this.state.userId).then(allNews => {
         this.setState({
@@ -131,6 +139,14 @@ export default class ApplicationViews extends Component {
           })
         );
     };
+    addUser = newUser =>
+      LoginManager.post(newUser)
+        .then(() => LoginManager.getAll())
+        .then(user =>
+          this.setState({
+            userId: user
+          })
+        );
 
     addNews = Newnews =>
       NewsManager.post(Newnews)
@@ -151,16 +167,40 @@ export default class ApplicationViews extends Component {
     render() {
       return (
         <React.Fragment>
+           <Route path="/login" component={Login} />
+
+           <Route exact path="/login/new" render={(props) => {
+             return <LoginForm {...props}
+                                          userId={this.state.userId}
+                                         addUser ={this.addUser} />
+                                        }} />
+           <Route exact path="/" render={(props) => {
+
+            if (this.isAuthenticated()) {
+              return <NewsList {...props}
+                newsitems={this.state.newsitems}
+                deleteNews={this.deleteNews} />
+            } else {
+              return <Redirect to="/login" />
+            }
+          }} />
+
+           {/*BEGIN NEWS ROUTING*/}
           <Route exact path="/news" render={(props) => {
-            return <NewsList {...props}
-              newsitems={this.state.newsitems}
-              deleteNews={this.deleteNews}/>
-          }}/>
+            if (this.isAuthenticated()) {
+                return <NewsList {...props}
+                  newsitems={this.state.newsitems}
+                  deleteNews={this.deleteNews} />
+            } else {
+              return <Redirect to="/login" />
+            }
+          }} />
 
           <Route path="/news/new" render={(props) => {
             return <NewsForm {...props}
             addNews={this.addNews}/>
                   }} />
+
 
           <Route
             path="/friends" render={props => {
