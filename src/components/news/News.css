@@ -1,0 +1,30 @@
+.newsCards{
+  display:flex;
+  justify-content: space-around;
+  flex-direction:column;
+  margin-top:20px;
+  flex-wrap:wrap;
+  width:20%;
+  border:1px solid gray;
+  padding:20px;
+  background-color:#707884;
+  color:white;
+  box-shadow:2px 2px 8px gray;
+  border-radius:15px;
+
+}
+.newsButton{
+  display:flex;
+  justify-content:center;
+  flex-direction:row;
+  margin-top:10px;
+
+}
+.heading{
+  text-align:center;
+}
+.cardHolder{
+  display:flex;
+  justify-content: space-around;
+  flex-direction:row;
+}
