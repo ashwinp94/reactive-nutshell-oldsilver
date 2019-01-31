@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
+
 import TaskList from './task/TaskList'
 import TaskManager from "../modules/TaskManager";
 import TaskForm from './task/TaskForm'
@@ -35,7 +36,6 @@ export default class ApplicationViews extends Component {
         events: events
       })
     })
-
     //onComponentDidMount we are filtering through the database and only showing tasks with the value of false
     //all the true/ completed tasks remain in the database
     TaskManager.getAll()
@@ -47,11 +47,13 @@ export default class ApplicationViews extends Component {
         tasks:filteredTasks
         })
       })
+
       NewsManager.getYourNews(this.state.userId).then(allNews => {
         this.setState({
           newsitems: allNews
         });
       });
+
       MessageManager.getAll().then(allMessages => {
         this.setState({
           messages: allMessages
@@ -59,6 +61,7 @@ export default class ApplicationViews extends Component {
       });
     }
 
+//=============================Add functions=============================//
   addMessage = newMessage => MessageManager.post(newMessage)
   .then(() => MessageManager.getAll())
   .then(message => this.setState({
@@ -90,19 +93,21 @@ export default class ApplicationViews extends Component {
       tasks:filteredTasks
     })
   })
-  deleteMessage = id => {
-    return fetch(`http://localhost:5002/messages/${id}`, {
+  //=============================Delete functions=============================//
+  deleteNews = id => {
+    return fetch(`http://localhost:5002/newsitems/${id}`, {
       method: "DELETE"
     })
-      .then(e => e.json())
-      .then(() => fetch(`http://localhost:5002/messages`))
-      .then(e => e.json())
-      .then(messages => this.setState({
-        messages: messages
-      })
-      )
-  }
-
+      .then(response => response.json())
+      .then(() => fetch(`http://localhost:5002/newsitems`))
+      .then(response => response.json())
+      .then(news =>
+        this.setState({
+          newsitems: news
+        })
+      );
+  };
+//============================Edit  functions=============================//
   editTask = (taskId, existingObj) => {
     return TaskManager.editTask(taskId, existingObj)
     .then(() => TaskManager.getAll())
@@ -112,7 +117,7 @@ export default class ApplicationViews extends Component {
       })
     })
   }
-
+//=============================Update Functions=============================//
   updateTasksList = (taskId, existingObj) => {
     return TaskManager.getAllNonCompletedTasks(taskId, existingObj)
     .then(() => TaskManager.getAll())
@@ -249,31 +254,5 @@ export default class ApplicationViews extends Component {
           }} />
       </React.Fragment>
     )
-
-    render() {
-      return (
-        <React.Fragment>
-
-
-           {/*BEGIN NEWS ROUTING*/}
-
-
-
-
-           {/*BEGIN FRIENDS ROUTING*/}
-
-
-           {/*BEGIN MESSAGES ROUTING*/}
-
-
-           {/*BEGIN TASKS ROUTING*/}
-
-
-
-
-
-        </React.Fragment>
-      )
-    }
-  }
+        }
 }
