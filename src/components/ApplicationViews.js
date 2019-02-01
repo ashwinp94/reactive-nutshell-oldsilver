@@ -175,6 +175,7 @@ export default class ApplicationViews extends Component {
               })
             })
         }
+
         verifyUser = (username, password) => {
           LoginManager.getUsernameAndPassword(username, password)
             .then(allUsers => this.setState({
@@ -208,7 +209,7 @@ export default class ApplicationViews extends Component {
                   return <NewsList {...props}
                     newsitems={this.state.newsitems}
                     deleteNews={this.deleteNews}
-                    userId={this.state.userId}
+                      userId={this.state.userId}
                   />
                 } else {
                   return <Redirect to="/login" />
