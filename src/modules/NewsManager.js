@@ -10,6 +10,15 @@ export default {
   getYourNews(id){
     return fetch(`${remoteURL}/newsitems?userId=${id}`).then(e => e.json());
   },
+  put(newsId, existingNews) {
+    return fetch(`${remoteURL}/newsitems/${newsId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/JSON"
+      },
+      body: JSON.stringify(existingNews)
+    }).then(data => data.json())
+  },
   post(newNews) {
     return fetch(`${remoteURL}/newsitems`, {
       method: "POST",

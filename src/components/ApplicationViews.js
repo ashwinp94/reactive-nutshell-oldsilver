@@ -10,6 +10,7 @@ import MessageManager from '../modules/MessageManager'
 import NewsManager from '../modules/NewsManager'
 import NewsList from './news/NewsList'
 import NewsForm from "./news/NewsForm";
+import EditNews from './news/EditNews'
 import EventForm from "./events/EventForm";
 import EventList from "./events/EventList";
 import EventManager from "../modules/EventManager";
@@ -165,6 +166,15 @@ export default class ApplicationViews extends Component {
               })
             })
         }
+        updateNews = (newsId, editedNewsObj) => {
+          return NewsManager.put(newsId, editedNewsObj)
+          .then(()=> NewsManager.getAll())
+          .then(news =>{
+            this.setState({
+              newsitems:news
+            })
+          })
+        }
 
         updateMessage = (messageId, editedMessageObj) => {
           return MessageManager.put(messageId, editedMessageObj)
@@ -217,12 +227,15 @@ export default class ApplicationViews extends Component {
               }} />
 
               <Route path="/news/new" render={(props) => {
-            return <NewsForm {...props}
-              addNews={this.addNews}
-              newsitems={this.state.newsitems}
-              userId={this.state.userId}
-            />
-          }} />
+                if (this.isAuthenticated()){
+                  return <NewsForm {...props}
+                  addNews={this.addNews}
+                  newsitems={this.state.newsitems}
+                  userId={this.state.userId}/>
+          } else {
+            return <Redirect to="/login" />
+                }
+              }} />
 
           <Route path="/friends" render={props => {
             if (this.isAuthenticated()) {
