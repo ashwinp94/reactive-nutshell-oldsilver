@@ -38,8 +38,7 @@ export default class ApplicationViews extends Component {
         events: events
       })
     })
-    //onComponentDidMount we are filtering through the database and only showing tasks with the value of false
-    //all the true/ completed tasks remain in the database
+
     TaskManager.getAll()
       .then(allTasks => {
         let filteredTasks = allTasks.filter(task => {
@@ -50,7 +49,7 @@ export default class ApplicationViews extends Component {
         })
       })
 
-    NewsManager.getAll().then(allNews => {
+    NewsManager.getYourNews(this.state.userId).then(allNews => {
       this.setState({
         newsitems: allNews
       });
@@ -78,7 +77,7 @@ export default class ApplicationViews extends Component {
     )
   addNews = Newnews =>
     NewsManager.post(Newnews)
-      .then(() => NewsManager.getAll())
+      .then(() => NewsManager.getYourNews(this.state.userId))
       .then(news =>
         this.setState({
           newsitems: news
@@ -96,7 +95,7 @@ export default class ApplicationViews extends Component {
         })
       })
       addUser = newUser =>
-    LoginManager.post(newUser)
+      LoginManager.post(newUser)
       .then(() => LoginManager.getAll())
       .then(user =>
         this.setState({
@@ -110,7 +109,7 @@ export default class ApplicationViews extends Component {
           method: "DELETE"
         })
           .then(response => response.json())
-          .then(() => fetch(`http://localhost:5002/newsitems`))
+          .then(() => fetch(`http://localhost:5002/newsitems?userId=${this.state.userId}`))
           .then(response => response.json())
           .then(news =>
             this.setState({
