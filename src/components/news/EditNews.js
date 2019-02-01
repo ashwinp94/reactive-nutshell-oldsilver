@@ -73,7 +73,7 @@ export default class EditNews extends Component {
               <input type="text" required
                     className="form-control"
                     onChange={this.handleFieldChange}
-                    id="message"
+                    id="synopsis"
                     value={this.state.synopsis} />
             </div>
             <button type="submit" onClick={this.updateExistingNews} className="btn btn-primary">Update</button>

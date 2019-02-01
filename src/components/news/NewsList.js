@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from "react-router-dom";
 import "./News.css"
 export default class NewsList extends Component {
 
@@ -19,6 +20,7 @@ export default class NewsList extends Component {
                                     className="btn btn-success">
                                 Delete
                             </button>
+                            <Link className="nav link" to={`/news/${newsitem.id}/edit`}>Edit</Link>
                         </div>
                 )
         return (
@@ -35,7 +37,7 @@ export default class NewsList extends Component {
             <article className="cardHolder">
                 {sortedNewsItems}
             </article>
-            
+
             </section>
             </React.Fragment>
         );

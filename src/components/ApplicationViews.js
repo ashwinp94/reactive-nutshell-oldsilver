@@ -168,7 +168,7 @@ export default class ApplicationViews extends Component {
         }
         updateNews = (newsId, editedNewsObj) => {
           return NewsManager.put(newsId, editedNewsObj)
-          .then(()=> NewsManager.getAll())
+          .then(()=> NewsManager.getYourNews(this.state.userId))
           .then(news =>{
             this.setState({
               newsitems:news
@@ -236,6 +236,14 @@ export default class ApplicationViews extends Component {
             return <Redirect to="/login" />
                 }
               }} />
+              <Route exact path='/news/:newsId(\d+)/edit' render={(props => {
+            if (this.isAuthenticated()) {
+              return <EditNews {...props}
+                updateNews = {this.updateNews}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+          })} />
 
           <Route path="/friends" render={props => {
             if (this.isAuthenticated()) {
